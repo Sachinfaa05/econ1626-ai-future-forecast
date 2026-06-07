@@ -218,6 +218,32 @@ hr{border:none;border-top:1px solid var(--bord);margin:2.5rem 0}
   .scroll-cue{display:none}
   h1{font-size:2.7rem}
   .pull{font-size:1.15rem}
+  .sec{padding:4rem 1.25rem}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .pol-grid{grid-template-columns:1fr}
+  .tabs{flex-wrap:wrap}
+  .tab{padding:.6rem .9rem;font-size:.68rem}
+  .badges{gap:.4rem}
+}
+@media(max-width:420px){
+  h1{font-size:2.2rem}
+  .stat-grid{grid-template-columns:1fr}
+  .hero-thesis{padding:.9rem 1.1rem;font-size:.93rem}
+}
+@media print{
+  #prog,nav,.scroll-cue,.badges{display:none!important}
+  body{background:#fff;color:#111;font-size:12pt}
+  h1,h2,h3{color:#000;font-family:Georgia,serif}
+  .pull{background:#f9f4e8;border-left:3px solid #b45309;color:#111}
+  .teel-t{border-left-color:#b45309;color:#111}
+  .teel-ev{background:#eff6ff;border-left-color:#2563eb}
+  .ut{background:#fefce8;border-color:#b45309}
+  .ut::before{background:#b45309;color:#fff}
+  .cbox{border:1px solid #ccc}
+  .sec,.sec-alt{padding:2rem 0;background:#fff!important}
+  .stat{border:1px solid #ddd;background:#fafafa}
+  .stat-n{font-size:1.8rem}
+  a{color:#1d4ed8}
 }
 </style>
 </head>
