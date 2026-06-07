@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Invisible Checkout — AI & Australian Retail 2030</title>
 <meta name="description" content="An interactive forecast on AI, the prediction rent, and Australian retail by 2030.">
+<meta name="author" content="ECON1626 — RMIT University 2026">
+<meta property="og:title" content="The Invisible Checkout — AI & Australian Retail 2030">
+<meta property="og:description" content="By 2030, the biggest competitive advantage in Australian retail won't be price or location — it will be prediction. An interactive economic forecast.">
+<meta property="og:type" content="article">
+<meta name="theme-color" content="#04080f">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
@@ -217,10 +222,12 @@ hr{border:none;border-top:1px solid var(--bord);margin:2.5rem 0}
 </style>
 </head>
 <body>
-<div id="prog"></div>
+<a href="#thesis" style="position:fixed;top:-100px;left:0;background:var(--gold);color:#000;padding:.5rem 1rem;font-size:.8rem;font-weight:700;z-index:999;transition:top .2s" onfocus="this.style.top='0'" onblur="this.style.top='-100px'">Skip to content</a>
+
+<div id="prog" role="progressbar" aria-label="Reading progress"></div>
 
 <!-- NAV -->
-<nav>
+<nav aria-label="Site navigation">
   <span class="nav-brand">The Invisible Checkout</span>
   <ul class="nav-links">
     <li><a href="#thesis">Thesis</a></li>
@@ -232,8 +239,10 @@ hr{border:none;border-top:1px solid var(--bord);margin:2.5rem 0}
   </ul>
 </nav>
 
+<main id="main-content">
+
 <!-- ══════════════════════════════════════════ HERO -->
-<section id="hero" class="sec">
+<section id="hero" class="sec" aria-label="Introduction">
 <div class="hero-glow"></div>
 <div class="hero-inner">
   <p class="hero-kicker">ECON1626 · AI Future Forecast · RMIT University 2026</p>
@@ -700,9 +709,11 @@ hr{border:none;border-top:1px solid var(--bord);margin:2.5rem 0}
 </div>
 </section>
 
+</main>
+
 <footer>
   <div><strong style="color:var(--txb)">The Invisible Checkout</strong> &nbsp;·&nbsp; ECON1626 Assessment 3 &nbsp;·&nbsp; RMIT University 2026</div>
-  <div>Hosted on <a href="https://pages.github.com" target="_blank">GitHub Pages</a></div>
+  <div>Hosted on <a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a></div>
 </footer>
 
 <script>
