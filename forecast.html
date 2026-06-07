@@ -760,10 +760,16 @@ window.addEventListener('scroll', () => {
   btt.classList.toggle('show', window.scrollY > 600);
 },{passive:true});
 
-/* FADE UP */
+/* FADE UP — low threshold, no negative margin so hash-nav doesn't leave content invisible */
 const obs = new IntersectionObserver(ee=>ee.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')}),
-  {threshold:0.08,rootMargin:'0px 0px -28px 0px'});
+  {threshold:0.01});
 document.querySelectorAll('.fu').forEach(el=>obs.observe(el));
+// Immediately reveal anything already in the viewport (handles #anchor page loads)
+function checkFu(){document.querySelectorAll('.fu:not(.vis)').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<window.innerHeight+100&&r.bottom>-100)el.classList.add('vis');});}
+checkFu();
+window.addEventListener('load',checkFu);
+// Safety net: reveal any element still hidden after 1.8s
+setTimeout(()=>document.querySelectorAll('.fu').forEach(el=>el.classList.add('vis')),1800);
 
 /* TYPEWRITER */
 const txt = "How AI is rewriting the economics of Australian retail, and who captures the gains, by 2030.";
@@ -780,22 +786,13 @@ function animCnt(el){
     if(p<1)requestAnimationFrame(step);
   })(t0);
 }
-const co=new IntersectionObserver(ee=>ee.forEach(e=>{if(e.isIntersecting){animCnt(e.target);co.unobserve(e.target);}}),{threshold:.5});
+const co=new IntersectionObserver(ee=>ee.forEach(e=>{if(e.isIntersecting){animCnt(e.target);co.unobserve(e.target);}}),{threshold:.1});
 document.querySelectorAll('.cnt').forEach(el=>co.observe(el));
 
 /* SCROLLYTELLING */
 const stSlots={prod:'slot-prod',conc:'slot-conc',task:'slot-task'};
 const stLabels={prod:'Channel 01 · Operational Prediction',conc:'Channel 02 · Personalisation',task:'Channel 03 · Task Redesign'};
 const lbl=document.getElementById('chart-label');
-new IntersectionObserver(ee=>ee.forEach(e=>{
-  if(e.isIntersecting){
-    const c=e.target.dataset.chart;
-    Object.values(stSlots).forEach(s=>document.getElementById(s).classList.remove('active'));
-    document.getElementById(stSlots[c]).classList.add('active');
-    lbl.textContent=stLabels[c];
-  }
-}),{threshold:.3,rootMargin:'-10% 0px -50% 0px'}).observe;
-// Re-init properly:
 const stObs = new IntersectionObserver(ee=>ee.forEach(e=>{
   if(e.isIntersecting){
     const c=e.target.dataset.chart;
@@ -803,8 +800,13 @@ const stObs = new IntersectionObserver(ee=>ee.forEach(e=>{
     document.getElementById(stSlots[c]).classList.add('active');
     lbl.textContent=stLabels[c];
   }
-}),{threshold:.3,rootMargin:'-10% 0px -50% 0px'});
+}),{threshold:0.2, rootMargin:'-5% 0px -45% 0px'});
 document.querySelectorAll('.story-panel').forEach(p=>stObs.observe(p));
+
+/* RESIZE ALL CHARTS AFTER LOAD — fixes blank canvas on hash-anchor page load */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{ try{ Object.values(Chart.instances).forEach(c=>c.resize()); }catch(e){} }, 300);
+});
 
 /* SCENARIO SWITCHER */
 function sw(s){
