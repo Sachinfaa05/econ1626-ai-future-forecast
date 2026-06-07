@@ -490,12 +490,12 @@ hr{border:none;border-top:1px solid var(--bord);margin:2.5rem 0}
           <h4 style="margin-bottom:.4rem;margin-top:1rem">Explore: What Happens to Each Role</h4>
           <p class="jex-intro">Click a job category to see how AI reshapes the task mix inside that role. Bubble size in the chart reflects approximate employment scale.</p>
           <div class="jcards">
-            <div class="jcard" onclick="showJob('cashier')"><div class="jcard-icon">🛒</div><div class="jcard-title">Checkout Operator</div><span class="jcard-risk risk-h">High Risk</span></div>
-            <div class="jcard" onclick="showJob('stock')"><div class="jcard-icon">📦</div><div class="jcard-title">Stock Handler</div><span class="jcard-risk risk-m">Medium Risk</span></div>
-            <div class="jcard" onclick="showJob('service')"><div class="jcard-icon">💬</div><div class="jcard-title">Customer Service</div><span class="jcard-risk risk-m">Medium Risk</span></div>
-            <div class="jcard" onclick="showJob('fulfilment')"><div class="jcard-icon">🚚</div><div class="jcard-title">Online Fulfilment</div><span class="jcard-risk risk-m">Medium Risk</span></div>
-            <div class="jcard" onclick="showJob('manager')"><div class="jcard-icon">📊</div><div class="jcard-title">Store Manager</div><span class="jcard-risk risk-l">Low Risk</span></div>
-            <div class="jcard" onclick="showJob('ai')"><div class="jcard-icon">🤖</div><div class="jcard-title">AI Supervisor</div><span class="jcard-risk risk-n">New Role</span></div>
+            <div class="jcard" onclick="showJob('cashier',this)"><div class="jcard-icon">🛒</div><div class="jcard-title">Checkout Operator</div><span class="jcard-risk risk-h">High Risk</span></div>
+            <div class="jcard" onclick="showJob('stock',this)"><div class="jcard-icon">📦</div><div class="jcard-title">Stock Handler</div><span class="jcard-risk risk-m">Medium Risk</span></div>
+            <div class="jcard" onclick="showJob('service',this)"><div class="jcard-icon">💬</div><div class="jcard-title">Customer Service</div><span class="jcard-risk risk-m">Medium Risk</span></div>
+            <div class="jcard" onclick="showJob('fulfilment',this)"><div class="jcard-icon">🚚</div><div class="jcard-title">Online Fulfilment</div><span class="jcard-risk risk-m">Medium Risk</span></div>
+            <div class="jcard" onclick="showJob('manager',this)"><div class="jcard-icon">📊</div><div class="jcard-title">Store Manager</div><span class="jcard-risk risk-l">Low Risk</span></div>
+            <div class="jcard" onclick="showJob('ai',this)"><div class="jcard-icon">🤖</div><div class="jcard-title">AI Supervisor</div><span class="jcard-risk risk-n">New Role</span></div>
           </div>
           <div class="job-detail" id="job-detail"></div>
         </div>
@@ -835,9 +835,9 @@ const jobData = {
     text:'This is a genuinely new retail role category. Someone needs to supervise the demand forecasting models, identify when AI recommendations are wrong, audit algorithmic roster outputs for fairness, and explain AI-driven decisions to staff and regulators. These roles do not yet exist at scale in Australian retail, but the JSA (2025) identifies this as one of the fastest-growing skill demand areas in the sector.'}
 };
 
-function showJob(key){
+function showJob(key, el){
   document.querySelectorAll('.jcard').forEach(c=>c.classList.remove('active'));
-  event.currentTarget.classList.add('active');
+  el.classList.add('active');
   const d=jobData[key];
   const det=document.getElementById('job-detail');
   det.innerHTML=`
