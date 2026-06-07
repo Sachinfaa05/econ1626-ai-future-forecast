@@ -4,855 +4,684 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Invisible Checkout — AI & Australian Retail 2030</title>
-<meta name="description" content="An interactive forecast arguing that AI will create a prediction rent in Australian retail by 2030 — and what policy can do about it.">
+<meta name="description" content="An interactive forecast on AI, the prediction rent, and Australian retail by 2030.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-/* ── RESET ─────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-
-/* ── TOKENS ─────────────────────────────────────────────── */
 :root{
-  --bg:#04080f;
-  --bg2:#080f1a;
-  --card:rgba(255,255,255,0.03);
-  --card-h:rgba(255,255,255,0.055);
-  --border:rgba(255,255,255,0.07);
-  --gold:#f59e0b;
-  --gold-d:rgba(245,158,11,0.13);
-  --gold-b:rgba(245,158,11,0.28);
-  --blue:#38bdf8;
-  --blue-d:rgba(56,189,248,0.11);
-  --green:#34d399;
-  --green-d:rgba(52,211,153,0.11);
-  --red:#f87171;
-  --red-d:rgba(248,113,113,0.11);
-  --tx:#cbd5e1;
-  --txb:#f1f5f9;
-  --txm:#64748b;
-  --w:820px;
-  --ww:1080px;
+  --bg:#04080f;--bg2:#07101c;--bg3:#0b1524;
+  --card:rgba(255,255,255,0.03);--card-h:rgba(255,255,255,0.06);
+  --bord:rgba(255,255,255,0.07);--bord-h:rgba(255,255,255,0.14);
+  --gold:#f59e0b;--gold-d:rgba(245,158,11,0.1);--gold-b:rgba(245,158,11,0.3);
+  --blue:#38bdf8;--blue-d:rgba(56,189,248,0.1);
+  --green:#34d399;--green-d:rgba(52,211,153,0.1);
+  --red:#f87171;--red-d:rgba(248,113,113,0.1);
+  --tx:#c4d4e8;--txb:#eef4fd;--txm:#5e7a96;
+  --w:800px;--ww:1100px;
 }
+body{background:var(--bg);color:var(--tx);font-family:'Inter',system-ui,sans-serif;font-size:17px;line-height:1.8;overflow-x:hidden}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+em{font-style:italic}strong{color:var(--txb);font-weight:600}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--gold-b)}
 
-/* ── BASE ───────────────────────────────────────────────── */
-body{
-  background:var(--bg);
-  color:var(--tx);
-  font-family:'Inter',system-ui,sans-serif;
-  font-size:17px;
-  line-height:1.8;
-  overflow-x:hidden;
-}
-a{color:var(--blue);text-decoration:none}
-a:hover{text-decoration:underline}
-em{font-style:italic}
-strong{color:var(--txb);font-weight:600}
+/* PROGRESS */
+#prog{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
 
-/* ── SCROLLBAR ──────────────────────────────────────────── */
-::-webkit-scrollbar{width:3px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:rgba(245,158,11,0.35)}
-
-/* ── PROGRESS ───────────────────────────────────────────── */
-#prog{
-  position:fixed;top:0;left:0;width:0;height:2px;
-  background:linear-gradient(90deg,var(--gold),var(--blue));
-  z-index:200;transition:width .08s linear;
-}
-
-/* ── NAV ────────────────────────────────────────────────── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  height:52px;padding:0 2rem;
-  display:flex;align-items:center;justify-content:space-between;
-  background:rgba(4,8,15,.88);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--border);
-}
-.nav-logo{
-  font-size:.72rem;font-weight:700;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--gold);
-}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:52px;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(4,8,15,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--bord)}
+.nav-brand{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
 .nav-links{list-style:none;display:flex;gap:1.75rem}
-.nav-links a{
-  font-size:.72rem;font-weight:500;letter-spacing:.07em;
-  text-transform:uppercase;color:var(--txm);transition:color .2s;
-}
+.nav-links a{font-size:.7rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--txm);transition:color .2s}
 .nav-links a:hover{color:var(--txb);text-decoration:none}
 
-/* ── SECTION SHELL ──────────────────────────────────────── */
-.sec{padding:5.5rem 2rem}
+/* LAYOUT */
+.sec{padding:6rem 2rem}
 .sec-alt{background:var(--bg2)}
 .wrap{max-width:var(--w);margin:0 auto}
 .wrap-w{max-width:var(--ww);margin:0 auto}
 
-/* ── EYEBROW ─────────────────────────────────────────────── */
-.eyebrow{
-  font-size:.67rem;font-weight:700;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--gold);
-  display:flex;align-items:center;gap:.7rem;margin-bottom:.9rem;
-}
-.eyebrow::after{content:'';width:2rem;height:1px;background:var(--gold);opacity:.45}
+/* EYEBROW */
+.eyebrow{font-size:.65rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.7rem;margin-bottom:.8rem}
+.eyebrow::after{content:'';width:2rem;height:1px;background:var(--gold);opacity:.4}
 
-/* ── HEADINGS ───────────────────────────────────────────── */
-h2{
-  font-family:'Playfair Display',Georgia,serif;
-  font-size:clamp(2rem,3.8vw,2.9rem);
-  font-weight:900;color:var(--txb);line-height:1.12;
-  margin-bottom:1.25rem;
-}
-h3{
-  font-family:'Playfair Display',Georgia,serif;
-  font-size:1.45rem;font-weight:700;color:var(--txb);
-  margin-bottom:.9rem;line-height:1.25;
-}
-h4{
-  font-size:.75rem;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--blue);margin-bottom:.5rem;
-}
-p{margin-bottom:1rem}
+/* HEADINGS */
+h2{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.9rem,3.6vw,2.8rem);font-weight:900;color:var(--txb);line-height:1.12;margin-bottom:1.2rem}
+h3{font-family:'Playfair Display',Georgia,serif;font-size:1.35rem;font-weight:700;color:var(--txb);margin-bottom:.85rem;line-height:1.3}
+h4{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:.45rem}
+p{margin-bottom:.95rem}
 
-/* ── HERO ───────────────────────────────────────────────── */
-#hero{
-  min-height:100vh;display:flex;flex-direction:column;
-  justify-content:center;padding:7rem 2rem 5rem;
-  position:relative;overflow:hidden;
-}
-#hero::before{
-  content:'';position:fixed;inset:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 70% 55% at 15% 55%,rgba(245,158,11,.045) 0%,transparent 62%),
-    radial-gradient(ellipse 55% 70% at 82% 28%,rgba(56,189,248,.032) 0%,transparent 60%);
-}
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:7rem 2rem 5rem;position:relative;overflow:hidden}
+.hero-glow{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse 65% 50% at 12% 52%,rgba(245,158,11,.042) 0%,transparent 60%),radial-gradient(ellipse 50% 65% at 84% 26%,rgba(56,189,248,.028) 0%,transparent 58%)}
 .hero-inner{max-width:var(--ww);margin:0 auto;position:relative;z-index:1}
-.hero-kicker{
-  font-size:.68rem;font-weight:600;letter-spacing:.22em;
-  text-transform:uppercase;color:var(--gold);
-  display:flex;align-items:center;gap:.75rem;margin-bottom:1.6rem;
-}
-.hero-kicker::before{content:'';width:1.75rem;height:1px;background:var(--gold)}
-h1{
-  font-family:'Playfair Display',Georgia,serif;
-  font-size:clamp(3.2rem,7.5vw,6.8rem);
-  font-weight:900;line-height:1.03;color:var(--txb);
-  margin-bottom:1.4rem;
-}
+.hero-kicker{font-size:.66rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.75rem;margin-bottom:1.4rem}
+.hero-kicker::before{content:'';width:1.6rem;height:1px;background:var(--gold)}
+h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(3rem,7.2vw,6.6rem);font-weight:900;line-height:1.04;color:var(--txb);margin-bottom:1.25rem}
 h1 .italic{font-style:italic;color:var(--gold)}
-.hero-sub{
-  font-size:1.1rem;font-weight:300;color:var(--txm);
-  max-width:560px;margin-bottom:2.5rem;
-}
-.hero-thesis{
-  max-width:660px;
-  border-left:3px solid var(--gold);
-  background:var(--gold-d);
-  padding:1.2rem 1.5rem;
-  font-size:.97rem;line-height:1.7;
-  margin-bottom:2.5rem;
-}
+.hero-sub{font-size:1.08rem;font-weight:300;color:var(--txm);max-width:540px;margin-bottom:2rem;min-height:2.4em}
+.hero-thesis{max-width:640px;border-left:3px solid var(--gold);background:var(--gold-d);padding:1.2rem 1.5rem;font-size:.97rem;line-height:1.75;margin-bottom:2.2rem}
 .hero-thesis strong{color:var(--gold)}
-.badges{display:flex;flex-wrap:wrap;gap:.6rem}
-.badge{
-  display:inline-flex;align-items:center;gap:.35rem;
-  font-size:.66rem;font-weight:700;letter-spacing:.08em;
-  text-transform:uppercase;padding:.22rem .65rem;border:1px solid;
-}
-.badge-g{color:var(--gold);border-color:var(--gold-b);background:var(--gold-d)}
-.badge-b{color:var(--blue);border-color:rgba(56,189,248,.28);background:var(--blue-d)}
-.badge-e{color:var(--green);border-color:rgba(52,211,153,.28);background:var(--green-d)}
-.scroll-cue{
-  position:absolute;bottom:2.2rem;left:2rem;
-  display:flex;flex-direction:column;align-items:flex-start;gap:.4rem;
-  z-index:1;
-}
-.scroll-cue span{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--txm)}
-.scroll-line{
-  width:1px;height:36px;
-  background:linear-gradient(to bottom,var(--gold),transparent);
-  animation:pulse 2s ease-in-out infinite;
-}
+.badges{display:flex;flex-wrap:wrap;gap:.55rem}
+.bdg{display:inline-flex;align-items:center;font-size:.64rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .6rem;border:1px solid}
+.bdg-g{color:var(--gold);border-color:var(--gold-b);background:var(--gold-d)}
+.bdg-b{color:var(--blue);border-color:rgba(56,189,248,.28);background:var(--blue-d)}
+.bdg-e{color:var(--green);border-color:rgba(52,211,153,.28);background:var(--green-d)}
+.scroll-cue{position:absolute;bottom:2rem;left:2rem;z-index:1;display:flex;flex-direction:column;align-items:flex-start;gap:.4rem}
+.scroll-cue span{font-size:.63rem;letter-spacing:.15em;text-transform:uppercase;color:var(--txm)}
+.scroll-line{width:1px;height:34px;background:linear-gradient(to bottom,var(--gold),transparent);animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
 
-/* ── PULL QUOTE ─────────────────────────────────────────── */
-.pull{
-  font-family:'Playfair Display',Georgia,serif;
-  font-size:1.55rem;font-style:italic;line-height:1.4;
-  color:var(--txb);border-left:3px solid var(--gold);
-  background:var(--gold-d);padding:1.5rem 2rem;margin:2.5rem 0;
-}
+/* PULL QUOTE */
+.pull{font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;font-style:italic;line-height:1.42;color:var(--txb);border-left:3px solid var(--gold);background:var(--gold-d);padding:1.4rem 1.9rem;margin:2.2rem 0}
 .pull strong{color:var(--gold);font-style:normal}
 
-/* ── TEEL ────────────────────────────────────────────────── */
-.teel{margin-bottom:2.25rem}
-.teel-t{
-  font-size:1.02rem;font-weight:500;color:var(--txb);
-  border-left:2px solid var(--gold);padding-left:1rem;
-  margin-bottom:.7rem;
-}
-.teel-e1{color:var(--tx);margin-bottom:.7rem}
-.teel-ev{
-  background:var(--blue-d);border-left:2px solid var(--blue);
-  padding:.75rem 1rem;font-size:.93rem;margin-bottom:.7rem;
-}
-.teel-ev cite{
-  display:block;font-size:.72rem;color:var(--txm);
-  margin-top:.3rem;font-style:normal;
-}
-.teel-l{font-style:italic;color:rgba(245,158,11,.82);font-size:.95rem}
+/* TEEL */
+.teel{margin-bottom:2.2rem}
+.teel-t{font-size:1.02rem;font-weight:500;color:var(--txb);border-left:2px solid var(--gold);padding-left:.95rem;margin-bottom:.65rem}
+.teel-e1{color:var(--tx);margin-bottom:.65rem}
+.teel-ev{background:var(--blue-d);border-left:2px solid var(--blue);padding:.75rem 1rem;font-size:.92rem;margin-bottom:.65rem}
+.teel-ev cite{display:block;font-size:.7rem;color:var(--txm);margin-top:.28rem;font-style:normal}
+.teel-l{font-style:italic;color:rgba(245,158,11,.8);font-size:.94rem}
 
-/* ── STATS GRID ─────────────────────────────────────────── */
-.stat-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(195px,1fr));
-  gap:1.1rem;margin:2.5rem 0;
-}
-.stat{
-  background:var(--card);border:1px solid var(--border);
-  padding:1.6rem 1.4rem;position:relative;overflow:hidden;
-  transition:border-color .25s;
-}
-.stat:hover{border-color:rgba(255,255,255,.13)}
+/* UNUSUAL TAKE BOX */
+.ut{position:relative;margin:2.5rem 0;padding:1.6rem 1.5rem 1.4rem;background:linear-gradient(135deg,rgba(245,158,11,0.07),rgba(56,189,248,0.04));border:1px solid var(--gold-b)}
+.ut::before{content:'UNUSUAL TAKE';position:absolute;top:-1px;left:1.4rem;background:var(--gold);color:#04080f;font-size:.58rem;font-weight:800;letter-spacing:.13em;padding:.18rem .6rem;transform:translateY(-50%)}
+.ut-title{font-size:1rem;font-weight:600;color:var(--txb);margin-bottom:.55rem}
+.ut p{font-size:.94rem;color:var(--tx);margin-bottom:.6rem}
+.ut p:last-child{margin-bottom:0}
+
+/* STAT GRID */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1.1rem;margin:2.2rem 0}
+.stat{background:var(--card);border:1px solid var(--bord);padding:1.5rem 1.3rem;position:relative;overflow:hidden;transition:border-color .25s}
+.stat:hover{border-color:var(--bord-h)}
 .stat::after{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-.stat.sg::after{background:var(--gold)}
-.stat.sb::after{background:var(--blue)}
-.stat.se::after{background:var(--green)}
-.stat.sr::after{background:var(--red)}
-.stat-n{
-  font-family:'Playfair Display',Georgia,serif;
-  font-size:2.4rem;font-weight:700;line-height:1;
-  margin-bottom:.35rem;
-}
-.stat.sg .stat-n{color:var(--gold)}
-.stat.sb .stat-n{color:var(--blue)}
-.stat.se .stat-n{color:var(--green)}
-.stat.sr .stat-n{color:var(--red)}
-.stat-lbl{
-  font-size:.75rem;font-weight:600;text-transform:uppercase;
-  letter-spacing:.08em;color:var(--txm);margin-bottom:.2rem;
-}
-.stat-desc{font-size:.82rem;color:var(--txm)}
-.stat-src{font-size:.66rem;color:var(--txm);opacity:.55;margin-top:.3rem}
+.stat.sg::after{background:var(--gold)}.stat.sb::after{background:var(--blue)}
+.stat.se::after{background:var(--green)}.stat.sr::after{background:var(--red)}
+.stat-n{font-family:'Playfair Display',Georgia,serif;font-size:2.3rem;font-weight:700;line-height:1;margin-bottom:.3rem}
+.stat.sg .stat-n{color:var(--gold)}.stat.sb .stat-n{color:var(--blue)}
+.stat.se .stat-n{color:var(--green)}.stat.sr .stat-n{color:var(--red)}
+.stat-lbl{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--txm);margin-bottom:.2rem}
+.stat-desc{font-size:.8rem;color:var(--txm)}
+.stat-src{font-size:.64rem;color:var(--txm);opacity:.5;margin-top:.25rem}
 
-/* ── CHART BOX ───────────────────────────────────────────── */
-.cbox{
-  background:var(--card);border:1px solid var(--border);
-  padding:1.75rem 1.75rem 1.25rem;margin:2.2rem 0;
-}
-.ctitle{
-  font-size:.72rem;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--txm);margin-bottom:1.4rem;
-}
-.cnote{
-  font-size:.7rem;color:var(--txm);margin-top:.9rem;
-  font-style:italic;line-height:1.5;
-}
+/* CHART BOX */
+.cbox{background:var(--card);border:1px solid var(--bord);padding:1.6rem 1.6rem 1.1rem;margin:2rem 0}
+.ctitle{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txm);margin-bottom:1.3rem}
+.cnote{font-size:.68rem;color:var(--txm);margin-top:.8rem;font-style:italic;line-height:1.5}
 canvas{max-width:100%}
 
-/* ── CHANNEL NUM ─────────────────────────────────────────── */
-.ch-head{display:flex;align-items:flex-start;gap:1.4rem;margin-bottom:2rem}
-.ch-n{
-  font-family:'Playfair Display',Georgia,serif;
-  font-size:4.5rem;font-weight:900;
-  color:rgba(255,255,255,.04);line-height:1;flex-shrink:0;user-select:none;
-}
+/* SCROLLYTELLING */
+.story-wrap{display:grid;grid-template-columns:54% 1fr;gap:3.5rem;margin-top:2.5rem;align-items:start}
+.story-text{}
+.story-sticky{position:sticky;top:74px}
+.story-panel{min-height:90vh;padding-bottom:4rem;display:flex;flex-direction:column;justify-content:center}
+.ch-head{display:flex;align-items:flex-start;gap:1.2rem;margin-bottom:1.8rem}
+.ch-n{font-family:'Playfair Display',Georgia,serif;font-size:4rem;font-weight:900;color:rgba(255,255,255,0.04);line-height:1;flex-shrink:0;user-select:none}
+.chart-slot{display:none;animation:fadeChart .45s ease}
+.chart-slot.active{display:block}
+@keyframes fadeChart{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.chart-slot-label{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--txm);text-align:center;margin-top:.7rem;transition:color .3s}
 
-/* ── SCENARIO TABS ───────────────────────────────────────── */
-.tabs{
-  display:flex;border-bottom:1px solid var(--border);
-  margin-bottom:2.2rem;
-}
-.tab{
-  padding:.8rem 1.6rem;font-size:.76rem;font-weight:600;
-  letter-spacing:.06em;text-transform:uppercase;
-  cursor:pointer;color:var(--txm);
-  background:transparent;border:none;
-  border-bottom:2px solid transparent;margin-bottom:-1px;
-  transition:all .2s;
-}
+/* SCENARIO SIMULATOR */
+.sim-wrap{display:grid;grid-template-columns:1fr 1.6fr;gap:2.5rem;margin-top:2rem;align-items:start}
+.sim-controls{}
+.sim-slider-group{margin-bottom:1.6rem}
+.sim-label-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.5rem}
+.sim-label-row span:first-child{font-size:.78rem;font-weight:600;color:var(--txb)}
+.sim-val{font-size:.78rem;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;-webkit-appearance:none;height:3px;background:var(--bord-h);border-radius:2px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid var(--bg)}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid var(--bg)}
+.sim-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:.9rem 0;border-top:1px solid var(--bord)}
+.sim-toggle-row span{font-size:.78rem;font-weight:600;color:var(--txb)}
+.toggle{position:relative;width:42px;height:22px;cursor:pointer}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-track{position:absolute;inset:0;background:var(--bord-h);border-radius:22px;transition:background .25s}
+.toggle input:checked+.toggle-track{background:var(--green)}
+.toggle-track::after{content:'';position:absolute;width:16px;height:16px;background:white;border-radius:50%;top:3px;left:3px;transition:transform .25s}
+.toggle input:checked+.toggle-track::after{transform:translateX(20px)}
+.sim-outcome{margin-top:1.4rem;background:var(--card);border:1px solid var(--bord);padding:1.2rem;text-align:center}
+.sim-score{font-family:'Playfair Display',Georgia,serif;font-size:2.6rem;font-weight:700;color:var(--gold);line-height:1;margin-bottom:.3rem}
+.sim-score-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--txm);margin-bottom:.6rem}
+.sim-scenario-name{font-size:.85rem;font-weight:600;padding:.3rem .8rem;display:inline-block;border:1px solid}
+
+/* SCENARIO TABS */
+.tabs{display:flex;border-bottom:1px solid var(--bord);margin-bottom:2rem}
+.tab{padding:.75rem 1.5rem;font-size:.73rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;color:var(--txm);background:transparent;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
 .tab:hover{color:var(--txb)}
 .tab.ta{color:var(--blue);border-bottom-color:var(--blue)}
 .tab.tb{color:var(--green);border-bottom-color:var(--green)}
 .tab.tc{color:var(--red);border-bottom-color:var(--red)}
-.panel{display:none}
-.panel.on{display:block}
-.sc-meta{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:1rem;margin-bottom:1.75rem;
-}
-.sc-mi{
-  background:var(--card);border:1px solid var(--border);
-  padding:.9rem 1.1rem;
-}
-.sc-ml{
-  font-size:.68rem;text-transform:uppercase;
-  letter-spacing:.1em;color:var(--txm);margin-bottom:.3rem;
-}
-.sc-mv{font-size:.88rem;color:var(--txb)}
+.panel{display:none}.panel.on{display:block}
+.sc-meta{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.6rem}
+.sc-mi{background:var(--card);border:1px solid var(--bord);padding:.85rem 1rem}
+.sc-ml{font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:var(--txm);margin-bottom:.28rem}
+.sc-mv{font-size:.87rem;color:var(--txb)}
 
-/* ── POLICY CARDS ────────────────────────────────────────── */
-.pol-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
-  gap:1.4rem;margin:2rem 0;
-}
-.pol{
-  background:var(--card);border:1px solid var(--border);
-  padding:1.8rem 1.6rem;transition:all .25s;
-}
+/* POLICY */
+.pol-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.3rem;margin:1.8rem 0}
+.pol{background:var(--card);border:1px solid var(--bord);padding:1.7rem 1.5rem;transition:all .25s}
 .pol:hover{border-color:var(--gold-b);background:var(--gold-d)}
-.pol-n{
-  font-size:.67rem;font-weight:700;letter-spacing:.15em;
-  text-transform:uppercase;color:var(--gold);margin-bottom:.6rem;
-}
-.pol h3{font-size:1.05rem;margin-bottom:.65rem}
-.pol p{font-size:.88rem;color:var(--txm);margin-bottom:0}
-.kpi-row{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.9rem}
-.kpi{
-  font-size:.64rem;font-weight:700;letter-spacing:.07em;
-  text-transform:uppercase;padding:.18rem .55rem;
-  background:var(--gold-d);border:1px solid var(--gold-b);color:var(--gold);
-}
+.pol-n{font-size:.64rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:.55rem}
+.pol h3{font-size:1rem;margin-bottom:.6rem}
+.pol p{font-size:.86rem;color:var(--txm);margin-bottom:0}
+.kpi-row{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.85rem}
+.kpi{font-size:.62rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:.16rem .5rem;background:var(--gold-d);border:1px solid var(--gold-b);color:var(--gold)}
 
-/* ── TIMELINE ────────────────────────────────────────────── */
-.timeline{position:relative;padding-left:1.8rem;margin:1.5rem 0}
-.timeline::before{
-  content:'';position:absolute;left:0;top:0;bottom:0;
-  width:1px;background:var(--border);
-}
-.tl-item{position:relative;padding-bottom:1.75rem}
-.tl-item::before{
-  content:'';position:absolute;left:-2.05rem;top:.45rem;
-  width:7px;height:7px;border-radius:50%;background:var(--gold);
-}
-.tl-yr{
-  font-size:.67rem;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--gold);margin-bottom:.2rem;
-}
-.tl-tx{font-size:.88rem;color:var(--txm)}
+/* TIMELINE */
+.tl{position:relative;padding-left:1.7rem;margin:1.4rem 0}
+.tl::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--bord)}
+.tl-item{position:relative;padding-bottom:1.6rem}
+.tl-item::before{content:'';position:absolute;left:-1.95rem;top:.42rem;width:7px;height:7px;border-radius:50%;background:var(--gold)}
+.tl-yr{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.18rem}
+.tl-tx{font-size:.86rem;color:var(--txm)}
 
-/* ── METHODS GRID ────────────────────────────────────────── */
-.m-grid{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:1.4rem;margin:1.75rem 0;
-}
-.m-item{
-  padding:1.1rem 1.2rem;
-  border-left:2px solid var(--border);
-}
+/* METHODS */
+.m-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem;margin:1.6rem 0}
+.m-item{padding:1rem 1.1rem;border-left:2px solid var(--bord)}
 .m-item h4{color:var(--blue)}
-.m-item p{font-size:.86rem;color:var(--txm);margin:0}
+.m-item p{font-size:.84rem;color:var(--txm);margin:0}
 
-/* ── REFS ────────────────────────────────────────────────── */
-.refs{list-style:none;font-size:.875rem;color:var(--txm)}
-.refs li{padding:.5rem 0;border-bottom:1px solid var(--border)}
+/* REFS */
+.refs{list-style:none;font-size:.87rem;color:var(--txm)}
+.refs li{padding:.48rem 0;border-bottom:1px solid var(--bord)}
 .refs li:last-child{border:none}
 
-/* ── FOOTER ─────────────────────────────────────────────── */
-footer{
-  padding:2.5rem 2rem;border-top:1px solid var(--border);
-  display:flex;justify-content:space-between;align-items:center;
-  flex-wrap:wrap;gap:1rem;
-  font-size:.78rem;color:var(--txm);
-}
+/* FOOTER */
+footer{padding:2.4rem 2rem;border-top:1px solid var(--bord);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:.77rem;color:var(--txm)}
 
-/* ── FADE-UP ANIMATION ───────────────────────────────────── */
-.fu{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+/* FADE UP */
+.fu{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
 .fu.vis{opacity:1;transform:none}
-.fu:nth-child(2){transition-delay:.08s}
-.fu:nth-child(3){transition-delay:.16s}
-.fu:nth-child(4){transition-delay:.24s}
+.fu:nth-child(2){transition-delay:.07s}.fu:nth-child(3){transition-delay:.14s}.fu:nth-child(4){transition-delay:.21s}
 
-/* ── HIGHLIGHT HELPERS ───────────────────────────────────── */
-.hl-g{color:var(--gold)}
-.hl-b{color:var(--blue)}
-.hl-e{color:var(--green)}
-.hl-r{color:var(--red)}
+/* HELPERS */
+.hl-g{color:var(--gold)}.hl-b{color:var(--blue)}.hl-e{color:var(--green)}.hl-r{color:var(--red)}
+hr{border:none;border-top:1px solid var(--bord);margin:2.5rem 0}
 
-/* ── RESPONSIVE ──────────────────────────────────────────── */
-@media(max-width:700px){
-  .nav-links,.scroll-cue{display:none}
-  h1{font-size:2.8rem}
+@media(max-width:720px){
+  .nav-links{display:none}
+  .story-wrap{grid-template-columns:1fr}
+  .story-sticky{display:none}
+  .sim-wrap{grid-template-columns:1fr}
   .sc-meta,.m-grid{grid-template-columns:1fr}
   .ch-n{display:none}
+  .scroll-cue{display:none}
+  h1{font-size:2.7rem}
   .pull{font-size:1.15rem}
 }
 </style>
 </head>
 <body>
-
 <div id="prog"></div>
 
 <!-- NAV -->
 <nav>
-  <span class="nav-logo">The Invisible Checkout</span>
+  <span class="nav-brand">The Invisible Checkout</span>
   <ul class="nav-links">
     <li><a href="#thesis">Thesis</a></li>
     <li><a href="#channels">Channels</a></li>
-    <li><a href="#scenarios">Scenarios</a></li>
+    <li><a href="#scenarios">Simulator</a></li>
     <li><a href="#policy">Policy</a></li>
     <li><a href="#methods">Methods</a></li>
     <li><a href="#refs">References</a></li>
   </ul>
 </nav>
 
-<!-- ═══════════════ HERO ══════════════════════════════════ -->
+<!-- ══════════════════════════════════════════ HERO -->
 <section id="hero" class="sec">
-  <div class="hero-inner">
-    <p class="hero-kicker">ECON1626 · AI Future Forecast · RMIT University 2026</p>
-    <h1>The <span class="italic">Invisible</span><br>Checkout</h1>
-    <p class="hero-sub">How artificial intelligence is rewriting the economics of Australian retail — and who captures the gains — by 2030.</p>
-
-    <div class="hero-thesis">
-      By 2030, AI will not simply automate Australian retail. It will create a new form of competitive advantage this essay calls the <strong>prediction rent</strong> — the surplus value captured by whoever builds the most accurate forecasting infrastructure in a sector where margins are thin, demand is uncertain, and data is the new capital.
-    </div>
-
-    <div class="badges">
-      <span class="badge badge-g">1.34 million workers at stake</span>
-      <span class="badge badge-b">AU$380B sector turnover</span>
-      <span class="badge badge-e">Three economic channels</span>
-    </div>
+<div class="hero-glow"></div>
+<div class="hero-inner">
+  <p class="hero-kicker">ECON1626 · AI Future Forecast · RMIT University 2026</p>
+  <h1>The <span class="italic">Invisible</span><br>Checkout</h1>
+  <p class="hero-sub" id="typewriter"></p>
+  <div class="hero-thesis">
+    Here is an argument you probably haven't heard before: by 2030, the biggest competitive advantage in Australian retail won't be price, location, or brand loyalty. It will be <strong>prediction</strong> — and whoever predicts best will hold a structural advantage over everyone else that compounds over time. This essay calls that advantage the <strong>prediction rent</strong>. It's already forming.
   </div>
-  <div class="scroll-cue">
-    <div class="scroll-line"></div>
-    <span>Scroll to explore</span>
+  <div class="badges">
+    <span class="bdg bdg-g">1.34 million workers</span>
+    <span class="bdg bdg-b">AU$400B+ sector</span>
+    <span class="bdg bdg-e">Three economic channels</span>
   </div>
+</div>
+<div class="scroll-cue"><div class="scroll-line"></div><span>Scroll to explore</span></div>
 </section>
 
-<!-- ═══════════════ THESIS ════════════════════════════════ -->
+<!-- ══════════════════════════════════════════ THESIS -->
 <section id="thesis" class="sec sec-alt">
 <div class="wrap">
 
   <div class="fu"><span class="eyebrow">Landing · Thesis</span></div>
-  <h2 class="fu">Prediction Replaces Uncertainty</h2>
+  <h2 class="fu">What Actually Changes</h2>
 
   <div class="teel fu">
-    <p class="teel-t">Before the first customer walks into a Melbourne supermarket in 2030, the most consequential decision of the morning has already been made — not by a manager, buyer or supplier, but by a forecasting algorithm that knows the store better than anyone who works inside it.</p>
-    <p class="teel-e1">That system has synthesised last week's weather, tomorrow's school holiday, a local sports event, and the purchasing history of 2.3 million loyalty cardholders. The shelves are already stocked accordingly. The casual roster is already optimised. The markdown on the yoghurt expiring tonight has been calculated. Nothing looks unusual. The store still smells like bread and cardboard. But underneath the ordinary morning, the economics of retail has changed in a way that most policy frameworks were not designed to address.</p>
-    <p class="teel-l">This is the world the prediction rent makes: more efficient on the surface, more unequal beneath — unless deliberate policy choices intervene before the infrastructure is locked in.</p>
+    <p class="teel-t">Think about the last time you bought milk. There was a price on the shelf. You could compare it with the price next door. That shared, observable price is one of the oldest mechanisms in market economics — and by 2030, it may no longer meaningfully exist in Australian retail.</p>
+    <p class="teel-e1">What replaces it is not cheaper milk or better service. What replaces it is a system that knows, before you've even entered the store or opened the app, what price you'll accept, which promotion will change your behaviour, and how likely you are to switch brands if the deal isn't good enough. For you, that might feel like convenience. For the retailer, it's an entirely new form of market power — one that scales with data, compounds with prediction, and currently sits almost entirely outside the reach of Australia's regulatory frameworks.</p>
+    <div class="teel-ev">
+      The ACCC's 2025 Supermarkets Inquiry Final Report found that Woolworths and Coles operate in an oligopolistic market structure with limited incentives for aggressive price competition. Promotional pricing practices — including was-now pricing — were found to be systematically misleading. AI personalisation will make these dynamics significantly harder to observe and challenge.
+      <cite>ACCC 2025a, <em>Supermarkets Inquiry: Final Report</em>, Australian Competition and Consumer Commission, Canberra.</cite>
+    </div>
+    <p class="teel-l">The central forecast of this essay is conditional: AI could create a more productive and responsive retail economy, but without deliberate policy, it will almost certainly deepen the market power of the retailers and platforms that already hold the most data.</p>
   </div>
 
   <div class="pull fu">
-    "AI will not simply automate Australian retail. It will turn <strong>uncertainty into prediction</strong> — and prediction into a new form of market power that compounds at the top of an already concentrated sector."
+    "The most consequential transformation in Australian retail won't be visible on the shop floor. It will happen in the systems behind it — and the question is <strong>who those systems serve</strong>."
+  </div>
+
+  <div class="ut fu">
+    <div class="ut-title">The Hayek Inversion: When the Retailer Knows More Than the Market</div>
+    <p>Friedrich Hayek's (1945) celebrated argument for market economies rested on a single insight: no central planner could ever aggregate the dispersed, local knowledge that millions of independent buyers and sellers communicate through prices. The price system was, in Hayek's framing, an information miracle — decentralised, spontaneous, impossible to replicate.</p>
+    <p>AI in retail performs something like a Hayek inversion. When Woolworths' loyalty algorithm analyses your purchase history across 1,200 weekly shops, it holds more structured knowledge about your preferences, habits and price sensitivity than you consciously hold about yourself. The information asymmetry Hayek thought impossible to centralise is, in a personalised retail context, being centralised — by the retailer. That's not a minor efficiency gain. That's a structural shift in who holds economic power in the relationship between buyer and seller.</p>
   </div>
 
   <div class="teel fu">
-    <p class="teel-t">The central economic argument of this forecast is that AI creates a prediction rent: the surplus value captured by whoever builds the most accurate forecasting infrastructure in a thin-margin, high-volume, data-rich industry.</p>
-    <p class="teel-e1">This matters because retail is not a marginal industry. It is a mass employer, a daily household service, and a politically sensitive sector connected to food prices, part-time work and consumer trust. The question this forecast addresses is not whether AI reshapes retail — it will — but who captures the gains, who absorbs the disruption, and what policy choices can shift those outcomes before the structural advantage becomes self-reinforcing.</p>
+    <p class="teel-t">Retail is not a marginal sector in Australia — it's a mass employer, a daily household service, and a politically sensitive industry connected to food prices, part-time work, and consumer trust.</p>
     <div class="teel-ev">
-      Jobs and Skills Australia (2026) reports that the retail sector employs approximately 1.34 million Australians — 9.1% of total employment — with a 50% part-time workforce share, making distributional questions central to any honest forecast.
+      Jobs and Skills Australia (2026) reports that retail employs approximately 1.34 million Australians — 9.1% of total employment — with a 50% part-time workforce share. This is not a sector on the periphery of the AI debate. It is the AI debate's most immediate lived consequence for the broadest cross-section of Australian workers.
       <cite>Jobs and Skills Australia 2026, <em>Retail Trade Industry Profile</em>, Australian Government, Canberra.</cite>
     </div>
-    <p class="teel-l">The retail sector's size, its labour-market profile, and its existing concentration make it an ideal lens through which to examine AI's broader economic consequences — and a compelling test case for what equitable technology governance can look like in practice.</p>
+    <p class="teel-l">The prediction rent, once established, doesn't stay in the supply chain or the loyalty app — it flows through labour markets, competition dynamics, and consumer welfare. That's why this is an economics story, not just a technology story.</p>
   </div>
 
 </div>
 </section>
 
-<!-- ═══════════════ CONTEXT ═══════════════════════════════ -->
+<!-- ══════════════════════════════════════════ CONTEXT -->
 <section id="context" class="sec">
 <div class="wrap-w">
-
   <div class="wrap">
     <div class="fu"><span class="eyebrow">The Retail Starting Point</span></div>
     <h2 class="fu">Pressure Before Transformation</h2>
-    <p class="fu" style="color:var(--txm);margin-bottom:.5rem">Australian retail arrives at the AI decade under strain, not comfort. AI adoption will not happen in a calm market — it will happen in a sector fighting to protect margins, manage uncertain demand, and hold customers who are more selective with every dollar spent.</p>
+    <p class="fu" style="color:var(--txm)">Australian retail enters the AI decade under strain, not comfort. Firms adopt AI not because it looks futuristic — they adopt it because they're running out of other levers to protect margin in a market where consumers are spending more carefully than they have in years.</p>
   </div>
 
   <div class="stat-grid fu">
     <div class="stat sg">
       <div class="stat-lbl">Retail workforce</div>
       <div class="stat-n"><span class="cnt" data-t="1340000">0</span></div>
-      <div class="stat-desc">Australians employed · 9.1% of all employment</div>
+      <div class="stat-desc">Australians employed · 9.1% of all jobs</div>
       <div class="stat-src">JSA 2026</div>
     </div>
     <div class="stat sb">
-      <div class="stat-lbl">Annual sector turnover</div>
-      <div class="stat-n">AU$<span class="cnt" data-t="380">0</span>B</div>
-      <div class="stat-desc">4.9% YoY growth Jun 2025</div>
-      <div class="stat-src">ABS 2025</div>
-    </div>
-    <div class="stat se">
-      <div class="stat-lbl">Part-time workforce share</div>
+      <div class="stat-lbl">Part-time share</div>
       <div class="stat-n"><span class="cnt" data-t="50">0</span>%</div>
-      <div class="stat-desc">Concentrated disruption risk profile</div>
+      <div class="stat-desc">Highest of any major industry sector</div>
       <div class="stat-src">JSA 2026</div>
     </div>
+    <div class="stat se">
+      <div class="stat-lbl">YoY turnover growth Jun 2025</div>
+      <div class="stat-n"><span class="cnt" data-t="4.9" data-dec="1">0</span>%</div>
+      <div class="stat-desc">Resilient, but margin pressure growing</div>
+      <div class="stat-src">ABS 2025</div>
+    </div>
     <div class="stat sr">
-      <div class="stat-lbl">Turnover growth forecast 2026</div>
+      <div class="stat-lbl">Forecast turnover growth 2026</div>
       <div class="stat-n"><span class="cnt" data-t="1.8" data-dec="1">0</span>%</div>
-      <div class="stat-desc">Down from 2.3% in 2025 — "pincer movement"</div>
+      <div class="stat-desc">Down from 2.3% — "pincer movement"</div>
       <div class="stat-src">Deloitte 2026</div>
     </div>
   </div>
 
   <div class="wrap">
     <div class="cbox fu">
-      <div class="ctitle">Retail Turnover Growth (%) vs Cost Pressure Index · 2020–2026</div>
-      <canvas id="cPressure" height="260"></canvas>
-      <p class="cnote">Sources: ABS Retail Trade (2025, 2026a); Deloitte Access Economics (2026). Cost Pressure Index is a composite of wage, energy and supply costs, base 2020 = 100. 2026 values are forecast.</p>
+      <div class="ctitle">Retail Turnover Growth vs Cost Pressure Index · 2020–2026 (Estimated)</div>
+      <canvas id="cPressure" height="250"></canvas>
+      <p class="cnote">Sources: ABS Retail Trade (2025); ABS Monthly Household Spending Indicator (2026a); Deloitte Access Economics (2026). Cost Pressure Index is a composite measure of wage, energy and supply-chain costs, base 2020 = 100. 2026 values are Deloitte forecasts.</p>
     </div>
 
     <div class="teel fu">
-      <p class="teel-t">The retail sector's "pincer movement" of rising costs and weakening demand is precisely the economic context that makes AI investment rational, not aspirational.</p>
-      <p class="teel-e1">Retailers under margin pressure do not invest in AI because it appears futuristic. They invest because it promises a specific economic exchange: capital expenditure today for reduced operational uncertainty tomorrow. Where the sector cannot grow its way to profitability, it will predict its way there.</p>
+      <p class="teel-t">The pressure is the point: AI investment in retail is not a luxury experiment — it's a margin-protection strategy in a sector that cannot afford to keep guessing.</p>
+      <p class="teel-e1">Where the sector can't grow its way to profitability, it will predict its way there. Fewer stockouts, tighter rosters, less promotional waste — each one is a small efficiency gain that compounds across hundreds of stores and millions of transactions. The firm that automates uncertainty first doesn't just become more efficient; it starts to pull away from competitors who are still paying the cost of being wrong.</p>
       <div class="teel-ev">
-        Deloitte Access Economics (2026) forecasts retail turnover growth of 1.8% in 2026, down from 2.3% in 2025. ABS data (2026a) confirms household spending fell 1.1% month-on-month in April 2026, with broad-based weakness across food, clothing and transport.
-        <cite>Deloitte Access Economics 2026; ABS 2026a, <em>Monthly Household Spending Indicator, April 2026</em>.</cite>
+        ABS data (2026a) shows household spending fell 1.1% month-on-month in April 2026, with falls in food, clothing, footwear and transport. Deloitte Access Economics (2026) describes this as a structural "pincer movement" — rising input costs meeting weakening consumer demand — that makes operational efficiency not optional but existential for mid-tier retailers.
+        <cite>ABS 2026a, <em>Monthly Household Spending Indicator, April 2026</em>; Deloitte Access Economics 2026.</cite>
       </div>
-      <p class="teel-l">The prediction rent emerges not in a boom market but in a contested one — making its distributional consequences more acute, not less.</p>
+      <p class="teel-l">This is the economic soil in which the prediction rent grows: stress, not innovation, is the primary driver of AI adoption — and that matters for how we think about who benefits and who gets left behind.</p>
     </div>
   </div>
-
 </div>
 </section>
 
-<!-- ═══════════════ CHANNELS INTRO ═══════════════════════ -->
+<!-- ══════════════════════════════════════════ CHANNELS (SCROLLYTELLING) -->
 <section id="channels" class="sec sec-alt">
-<div class="wrap">
-  <div class="fu"><span class="eyebrow">Economic Mechanisms</span></div>
-  <h2 class="fu">Three Channels of Transformation</h2>
-  <p class="fu" style="color:var(--txm)">AI reshapes retail not through a single dramatic rupture but through three interlocking mechanisms, each reinforcing the prediction rent from a different direction: the operational layer, the personalisation layer, and the labour market.</p>
-</div>
-</section>
-
-<!-- ═══════════════ CHANNEL 1 ═════════════════════════════ -->
-<section class="sec">
-<div class="wrap">
-
-  <div class="ch-head fu">
-    <div class="ch-n">01</div>
-    <div>
-      <span class="eyebrow">Channel One</span>
-      <h3>The Operational Prediction Layer</h3>
-    </div>
-  </div>
-
-  <div class="teel fu">
-    <p class="teel-t">The first and least visible transformation is operational: AI substitutes for uncertainty across the entire supply chain, not merely for specific workers at specific tasks.</p>
-    <p class="teel-e1">Retail looks simple from the customer side — a product is either on the shelf or it is not. Behind that moment is a chain of forecasting, ordering, logistics and staffing decisions, each carrying a cost when it goes wrong. Overstock produces waste. Understock produces lost sales and customer defection. Roster too few workers and service collapses; roster too many and labour costs erode already-thin margins. In food retail, where the ACCC (2025a) found Woolworths and Coles operating with gross margins of approximately 25–27%, the compounding gains from tighter prediction are substantial at scale.</p>
-    <div class="teel-ev">
-      McKinsey &amp; Company (2023) estimates that AI-driven demand forecasting can reduce inventory costs by 15–20% and improve forecast accuracy by 10–40% across retail operations — representing potential savings in the hundreds of millions annually on a sector turnover base exceeding AU$380 billion. The Productivity Commission (2025) identifies AI as a meaningful driver of productivity in data-rich sectors, but notes gains are conditional on data quality, firm capability and regulatory clarity.
-      <cite>McKinsey &amp; Company 2023, <em>The Economic Potential of Generative AI</em>; Productivity Commission 2025, Inquiry Report No. 111.</cite>
-    </div>
-    <p class="teel-l">The prediction rent begins here — in logistics dashboards and shelf-monitoring systems most customers will never see — and it begins accumulating asymmetrically in favour of firms with the most data and the most sophisticated models.</p>
-  </div>
-
-  <div class="cbox fu">
-    <div class="ctitle">Estimated AI Productivity Impact Range by Retail Function</div>
-    <canvas id="cProd" height="250"></canvas>
-    <p class="cnote">Source: McKinsey &amp; Company (2023). Ranges reflect variance across firm size and implementation quality. Upper bounds require high data maturity and organisational capability.</p>
-  </div>
-
-  <div class="teel fu">
-    <p class="teel-t">The deeper economic point is that operational AI is not primarily a technology substituting for labour — it is a technology substituting for uncertainty itself, and the competitive moat this creates is not replicable by effort alone.</p>
-    <p class="teel-e1">When a system can predict that a Footscray supermarket needs 15% more pasta on a Tuesday before a school holiday — because it has observed that pattern across 47 comparable stores and 300 similar events — the informational advantage does not merely produce efficiency. It produces a self-reinforcing edge: each correct forecast improves the training data for the next, compounding an advantage that smaller retailers, without comparable data volumes, cannot close by working harder or by following market signals after the fact.</p>
-    <p class="teel-l">This self-reinforcing dynamic is what transforms an operational efficiency into a structural rent — and it is why the distributional implications of AI in retail cannot be addressed by technology policy alone.</p>
-  </div>
-
-</div>
-</section>
-
-<!-- ═══════════════ CHANNEL 2 ═════════════════════════════ -->
-<section class="sec sec-alt">
-<div class="wrap">
-
-  <div class="ch-head fu">
-    <div class="ch-n">02</div>
-    <div>
-      <span class="eyebrow">Channel Two</span>
-      <h3>The Personalised Shelf and the Problem of Information Power</h3>
-    </div>
-  </div>
-
-  <div class="teel fu">
-    <p class="teel-t">By 2030, the most strategically important shelf in Australian retail may not be physical — it may be the personalised digital feed that each customer encounters before they ever enter a store or open an app.</p>
-    <p class="teel-e1">Loyalty apps, online carts, search histories and payment data already generate a detailed portrait of consumer behaviour. AI makes this data economically active by predicting what each customer might buy, when they are likely to switch brands, and what discount, reminder or substitute is most likely to retain them. In Australian grocery retail, where Coles Flybuys and Woolworths Everyday Rewards collectively hold behavioural data on tens of millions of households, personalisation is not a future possibility — it is a current commercial practice being dramatically accelerated by AI.</p>
-    <div class="teel-ev">
-      McKinsey &amp; Company (2023) reports that AI-driven personalisation delivers measurable revenue uplifts of 10–15% in retail settings. The ACCC (2025a) found that promotional practices in the supermarket sector were already opaque, with headline discounts routinely misleading consumers about genuine price reductions, and noted that loyalty programs created information asymmetries that disadvantaged less engaged consumers.
-      <cite>McKinsey 2023; ACCC 2025a, <em>Supermarkets Inquiry: Final Report</em>.</cite>
-    </div>
-    <p class="teel-l">Personalisation as a channel of the prediction rent is ethically complex precisely because its efficiency gains and its distributional risks are inseparable: the same capability that makes shopping more convenient also makes pricing less transparent.</p>
-  </div>
-
-  <div class="cbox fu">
-    <div class="ctitle">Australian Grocery Market Concentration · Estimated Share 2025</div>
-    <canvas id="cConc" height="270"></canvas>
-    <p class="cnote">Source: ACCC 2025a, Supermarkets Inquiry. AI-driven personalisation capabilities scale with data volume, reinforcing the structural advantage of the two dominant players who collectively hold loyalty data on tens of millions of households.</p>
-  </div>
-
-  <div class="teel fu">
-    <p class="teel-t">The economic issue is not whether personalisation improves the customer experience — often it does — but whether AI allows retailers to know consumers better than consumers understand the pricing system they are navigating.</p>
-    <p class="teel-e1">Hayek (1945) argued that the market's genius lies in its capacity to aggregate dispersed knowledge through prices. AI-enabled personalisation partially inverts this logic: the retailer now holds more information about the individual consumer's preferences, price sensitivity and switching likelihood than the price mechanism itself reveals. Two customers walking through the same digital store may face different prices, different offers and different assumptions about their willingness to pay — an outcome structurally analogous to third-degree price discrimination, now executed at algorithmic scale and speed.</p>
-    <div class="teel-ev">
-      The ACCC (2025b) warns in its Digital Platform Services Inquiry that data-driven market power creates structural barriers to competition that existing regulatory frameworks — designed for observable price conduct — were not built to address.
-      <cite>ACCC 2025b, <em>Digital Platform Services Inquiry: Final Report</em>.</cite>
-    </div>
-    <p class="teel-l">The prediction rent in personalisation is therefore a rent extracted from information asymmetry — and unless policy addresses the asymmetry directly, convenience and exploitation will remain difficult to distinguish at scale.</p>
-  </div>
-
-</div>
-</section>
-
-<!-- ═══════════════ CHANNEL 3 ═════════════════════════════ -->
-<section class="sec">
-<div class="wrap">
-
-  <div class="ch-head fu">
-    <div class="ch-n">03</div>
-    <div>
-      <span class="eyebrow">Channel Three</span>
-      <h3>Work Is Redesigned, Not Erased</h3>
-    </div>
-  </div>
-
-  <div class="teel fu">
-    <p class="teel-t">The common forecast says AI will "take jobs"; a more rigorous forecast — grounded in the task-based model of Autor (2015) and Acemoglu and Restrepo (2018) — says AI will restructure <em>tasks</em>, shift bargaining values and change what retail workers are hired to do.</p>
-    <p class="teel-e1">Retail jobs are not monolithic — they are bundles of tasks: scanning items, answering questions, restocking shelves, calming frustrated customers, checking inventory, following promotions and coordinating teams. AI can substitute for some tasks (routine information-processing, basic stock queries, standard promotional content) while complementing others (exception management, human service recovery, system supervision). The cashier role is not abolished overnight; it is progressively redesigned around AI-assisted workflows, while self-checkouts and digital interfaces absorb the routine scanning work that was never, in economic terms, the most valuable part of the role.</p>
-    <div class="teel-ev">
-      Jobs and Skills Australia (2025) finds that current generative AI technologies are more likely to augment work than fully automate it, though routine clerical and transactional roles face measurably higher displacement risk. The RBA (2025) similarly finds that Australian firms anticipate AI to be productivity-enhancing while transforming the skills mix they require — with long adjustment periods that can impose transitional costs on workers even when the aggregate outcome is positive.
-      <cite>JSA 2025, <em>Our Gen AI Transition: Implications for Work and Skills</em>; RBA 2025, <em>Technology Investment and AI</em>, Bulletin November.</cite>
-    </div>
-    <p class="teel-l">The task redesign channel connects the prediction rent to labour outcomes: if productivity gains from AI flow to shareholders and data-rich platforms rather than to retail workers, the sector becomes simultaneously more efficient and more unequal — a structural change hidden behind stable employment headlines.</p>
-  </div>
-
-  <div class="cbox fu">
-    <div class="ctitle">Retail Task Automation Risk vs Estimated Employment Demand Change · 2030</div>
-    <canvas id="cTask" height="320"></canvas>
-    <p class="cnote">Bubble size = relative employment scale in each category. Automation risk estimates derived from JSA (2025) task-level analysis applied to ABS retail occupational data. Positions illustrate direction and magnitude, not precise values.</p>
-  </div>
-
-  <div class="teel fu">
-    <p class="teel-t">The absence of mass unemployment is not evidence that distributional outcomes are benign — it may simply mean that labour market harm takes a slower, less visible form.</p>
-    <p class="teel-e1">Acemoglu and Restrepo's (2018) displacement-versus-productivity-effect framework is critical here. Automation creates a displacement effect when machines substitute for specific tasks — but this can be offset by a productivity effect (growing firms hire more workers in new roles) and the creation of new tasks entirely. The question is whether the new roles are accessible to the same workers whose old roles were displaced — particularly in a sector characterised by casualisation, migrant labour, and limited upskilling infrastructure. Without deliberate policy, task redesign may produce a retail workforce that is smaller and more skilled at the top, and more precarious at the bottom.</p>
-    <p class="teel-l">This is why the skills compact described in the Policy Playbook is not merely a training measure — it is the mechanism through which the labour channel of the prediction rent is either addressed or left to deepen.</p>
-  </div>
-
-</div>
-</section>
-
-<!-- ═══════════════ SCENARIOS ════════════════════════════ -->
-<section id="scenarios" class="sec sec-alt">
 <div class="wrap-w">
 
   <div class="wrap">
-    <div class="fu"><span class="eyebrow">Scenario Analysis</span></div>
-    <h2 class="fu">Three Futures: Policy as the Variable</h2>
-    <p class="fu" style="color:var(--txm);margin-bottom:2rem">Each scenario holds AI capability constant at a plausible 2030 level. What changes is the policy environment — the regulatory settings, investment decisions and institutional responses that determine who captures the prediction rent and who absorbs its costs. Click each scenario to explore.</p>
+    <div class="fu"><span class="eyebrow">Economic Mechanisms</span></div>
+    <h2 class="fu">Three Channels, One Thesis</h2>
+    <p class="fu" style="color:var(--txm)">AI enters retail through three distinct economic channels. Each one reinforces the prediction rent from a different angle. Scroll through them below — the chart on the right updates to show the data behind each argument.</p>
   </div>
 
-  <div class="wrap-w">
-    <div class="cbox fu">
-      <div class="ctitle">Retail Productivity Index by Scenario · 2024–2030 &nbsp;·&nbsp; Base Year = 100</div>
-      <canvas id="cScen" height="290"></canvas>
-      <p class="cnote">Illustrative projections calibrated against McKinsey (2023) AI productivity estimates and the Productivity Commission (2025) framework. Policy inputs — not technology capability — determine scenario divergence from 2026 onward.</p>
-    </div>
-  </div>
+  <div class="story-wrap">
+    <!-- TEXT PANELS -->
+    <div class="story-text">
 
-  <div class="wrap" style="margin-top:2.5rem">
-    <div class="tabs fu">
-      <button class="tab ta" onclick="sw('a')"><span class="badge badge-b" style="margin-right:.4rem">A</span> Quiet Automation</button>
-      <button class="tab" onclick="sw('b')"><span class="badge badge-e" style="margin-right:.4rem">B</span> Shared Productivity</button>
-      <button class="tab" onclick="sw('c')"><span class="badge" style="color:var(--red);border-color:rgba(248,113,113,.28);background:var(--red-d);margin-right:.4rem">C</span> Algorithmic Concentration</button>
+      <!-- CHANNEL 1 -->
+      <div class="story-panel" data-chart="prod">
+        <div class="ch-head">
+          <div class="ch-n">01</div>
+          <div>
+            <span class="eyebrow">Channel One</span>
+            <h3>The Operational Layer: Substituting for Uncertainty</h3>
+          </div>
+        </div>
+
+        <div class="teel">
+          <p class="teel-t">Start with the back room, not the shop floor. The most significant AI-driven changes in retail won't be the ones customers see — they'll happen in demand forecasting, inventory ordering and shift scheduling, running quietly in systems nobody directly observes.</p>
+          <p class="teel-e1">Retail looks simple from a customer's perspective: the product is either on the shelf or it isn't. Behind that moment is a chain of hundreds of decisions — how much to order, when to order it, how to move it from warehouse to shelf, how many staff to roster on a Tuesday that turns out to be unexpectedly busy. Get any of those decisions wrong at scale and you lose money. AI attacks this problem not by replacing specific workers, but by compressing the gap between what a store expects to happen and what actually happens. Each percentage point improvement in forecast accuracy eliminates waste that previously someone had to absorb.</p>
+          <div class="teel-ev">
+            McKinsey &amp; Company (2023) estimates that AI-driven demand forecasting can reduce retail inventory costs by 15–20% and improve forecast accuracy by 10–40%. The Productivity Commission (2025) identifies AI as a meaningful productivity driver in data-rich sectors, conditional on data quality, firm capability and regulatory clarity.
+            <cite>McKinsey &amp; Company 2023, <em>The Economic Potential of Generative AI</em>; Productivity Commission 2025, Inquiry Report No. 111.</cite>
+          </div>
+          <p class="teel-l">The prediction rent begins here — in logistics dashboards that customers never see — and it begins accumulating asymmetrically in favour of firms that already have the most operational data to train on.</p>
+        </div>
+
+        <div class="ut">
+          <div class="ut-title">The Compounding Edge: Why Data Advantages Don't Close</div>
+          <p>Here is what makes operational AI different from most technology investments: the advantage compounds. A better forecast today generates better training data for tomorrow's forecast. A retailer with five years of granular sales data — by store, by hour, by weather condition, by local event — doesn't just have more data than a smaller competitor. They have a model that has been tested and refined against real outcomes at a scale that can't be replicated by starting fresh.</p>
+          <p>This is the structural barrier nobody is talking about. The question isn't whether a small retailer can afford AI forecasting tools — increasingly, affordable tools exist. The question is whether their data is deep enough to make those tools work. In retail, data depth is itself a function of market share. Woolworths and Coles are not just larger. They are structurally positioned to have better models, permanently, unless data portability policy intervenes.</p>
+        </div>
+      </div>
+
+      <!-- CHANNEL 2 -->
+      <div class="story-panel" data-chart="conc">
+        <div class="ch-head">
+          <div class="ch-n">02</div>
+          <div>
+            <span class="eyebrow">Channel Two</span>
+            <h3>The Personalised Shelf: When Convenience Becomes Capture</h3>
+          </div>
+        </div>
+
+        <div class="teel">
+          <p class="teel-t">When you scan your Everyday Rewards card at Woolworths, you're not just earning points. You're providing data that makes a prediction model slightly more accurate — and that accuracy is worth more to Woolworths than the discount it just gave you.</p>
+          <p class="teel-e1">By 2030, the most strategically important shelf in Australian retail may not be physical. It may be the personalised feed in a customer's phone: the offers she sees before she decides which store to visit, the substitutes that appear when her regular brand is out of stock, the reminder that nudges a purchase she hadn't planned. AI makes loyalty data economically active in a new way — not just as a record of past purchases, but as a live predictor of future behaviour that can be acted on in real time. What looks like a helpful service is simultaneously a system of precision influence at scale.</p>
+          <div class="teel-ev">
+            McKinsey &amp; Company (2023) reports that AI-driven personalisation delivers measurable revenue uplifts of 10–15% in retail settings. The ACCC (2025a) found that existing loyalty and promotional practices were already opaque enough to confuse consumers about genuine value. AI personalisation intensifies this: prices, discounts and recommendations may become individualised in ways that make comparison-shopping structurally harder.
+            <cite>McKinsey &amp; Company 2023; ACCC 2025a, <em>Supermarkets Inquiry: Final Report</em>.</cite>
+          </div>
+          <p class="teel-l">The prediction rent in personalisation extracts value from information asymmetry: the retailer's model knows your price sensitivity — and will charge accordingly, unless policy addresses that asymmetry directly.</p>
+        </div>
+
+        <div class="ut">
+          <div class="ut-title">The Corner Store Paradox: Why the Small Retailer Might Actually Win</div>
+          <p>Here's the counterintuitive case. The assumption in most AI retail forecasts is that scale wins — Woolworths and Coles have the data, they'll have the best models, and everyone else will fall behind. That may be true for national-scale prediction. But it may not be true for hyper-local prediction.</p>
+          <p>The independent grocer in Newtown knows things that will never appear in a national loyalty dataset: that the Italian family at the end of the street buys three times as much olive oil before Christmas, that Friday evenings mean a run on beer before the local pub fills up, that the construction crew three blocks over buys two dozen Gatorades on hot days. That is dense, relational, community-specific knowledge — and it is, fundamentally, a prediction asset. The challenge is whether small retailers get access to affordable AI tools that let them operationalise what they already know intuitively. If policy creates that access, the corner store's local intelligence becomes a competitive moat that a national algorithm literally cannot replicate.</p>
+        </div>
+      </div>
+
+      <!-- CHANNEL 3 -->
+      <div class="story-panel" data-chart="task">
+        <div class="ch-head">
+          <div class="ch-n">03</div>
+          <div>
+            <span class="eyebrow">Channel Three</span>
+            <h3>The Labour Channel: Tasks Change Before Jobs Do</h3>
+          </div>
+        </div>
+
+        <div class="teel">
+          <p class="teel-t">The common story says AI will "take jobs." A more accurate story, and a more troubling one in some ways, is that AI will take <em>tasks</em> — and the labour market harm will arrive before the employment statistics catch it.</p>
+          <p class="teel-e1">A retail job isn't one thing. It's a bundle of tasks: scanning items, answering questions, managing stock, handling difficult customers, running promotions, supervising staff. AI is not uniformly good at all of these. It is very good at the routine, information-processing tasks — basic stock queries, standard scheduling, promotional content generation — and much weaker at the interpersonal, contextual, exception-handling tasks that define quality service. This means AI doesn't eliminate the retail worker; it hollows out the routine parts of their role while leaving (or creating) demand for the complex parts. Whether that's good or bad depends entirely on whether the worker gets the training and wages that should accompany the upgrade in role complexity.</p>
+          <div class="teel-ev">
+            Jobs and Skills Australia (2025) finds that current generative AI technologies are more likely to augment work than fully automate it, but that routine clerical and transactional roles face measurably higher displacement risk. The RBA (2025) finds Australian firms expect AI to be productivity-enhancing long-term while transforming the skills mix required — with long transitional periods that impose real costs on workers even when aggregate outcomes are positive.
+            <cite>JSA 2025, <em>Our Gen AI Transition: Implications for Work and Skills</em>; RBA 2025, <em>Technology Investment and AI</em>, Bulletin November.</cite>
+          </div>
+          <p class="teel-l">Acemoglu and Restrepo (2018) warn that automation's productivity gains do not automatically translate into wage gains — and in retail, with high casual rates and weak collective bargaining, that warning is particularly relevant.</p>
+        </div>
+
+        <div class="ut">
+          <div class="ut-title">The Algorithmic Roster: A New Form of Precarity That Wage Data Won't Capture</div>
+          <p>The most underanalysed labour story in AI retail isn't about job loss. It's about <em>scheduling power</em>. By 2030, shift schedules at major retailers may not be set by a manager who knows your name and your situation. They may be generated by an algorithm that optimises for predicted customer flow — and sends you your roster 48 hours out, sometimes 24.</p>
+          <p>Your ability to plan your week — childcare arrangements, second jobs, family commitments, study — becomes a function of how predictable the store's demand model is. The workers who bear this uncertainty most acutely are casual employees: the 50% part-time, often young, often migrant workforce that retail depends on. Employment data might show stable headcount. It won't show that the planning horizon for a worker's life has been compressed by an algorithm that has no stake in what happens to her outside the store. This is a form of economic harm that current labour statistics are not designed to measure — and that makes it politically invisible.</p>
+        </div>
+      </div>
+
+    </div><!-- /story-text -->
+
+    <!-- STICKY CHART -->
+    <div class="story-sticky">
+      <div class="cbox" style="margin:0">
+        <div class="chart-slot active" id="slot-prod">
+          <div class="ctitle">Estimated AI Productivity Impact by Retail Function</div>
+          <canvas id="cProd" height="280"></canvas>
+          <p class="cnote">Source: McKinsey &amp; Company (2023). Lower and upper bounds reflect variance in data maturity and implementation quality.</p>
+        </div>
+        <div class="chart-slot" id="slot-conc">
+          <div class="ctitle">Grocery Market Concentration · Est. 2025</div>
+          <canvas id="cConc" height="280"></canvas>
+          <p class="cnote">Source: ACCC 2025a. AI personalisation capabilities scale with loyalty data volume, reinforcing the two dominant players' structural advantage.</p>
+        </div>
+        <div class="chart-slot" id="slot-task">
+          <div class="ctitle">Task Automation Risk vs Employment Demand Change</div>
+          <canvas id="cTask" height="280"></canvas>
+          <p class="cnote">Derived from JSA (2025) task-level analysis applied to ABS retail occupational data. Bubble size = relative employment scale. Positions are illustrative of direction and magnitude.</p>
+        </div>
+        <div class="chart-slot-label" id="chart-label">Channel 01 · Operational Prediction</div>
+      </div>
     </div>
 
-    <!-- Panel A -->
-    <div id="pa" class="panel on fu">
-      <div class="sc-meta">
-        <div class="sc-mi">
-          <div class="sc-ml">Policy Inputs</div>
-          <div class="sc-mv">ACCC Supermarkets Inquiry recommendations partially implemented; no data portability legislation; JSA skills compact unfunded; algorithmic pricing oversight delayed.</div>
-        </div>
-        <div class="sc-mi">
-          <div class="sc-ml">Productivity Outcome</div>
-          <div class="sc-mv hl-b">Index 100 → 118 by 2030 — moderate gains concentrated at top of market.</div>
-        </div>
-      </div>
-      <div class="teel">
-        <p class="teel-t">The baseline scenario is quiet automation: AI spreads across Australian retail, but mostly beneath the surface, and its gains accumulate at the firms that already hold the most data.</p>
-        <p class="teel-e1">Large retailers use AI for stock forecasting, rostering, shelf monitoring and personalised offers. Productivity improves but the efficiency gains concentrate at the top of the market. Smaller retailers access AI only through third-party platforms they do not own or control, deepening platform dependency rather than building independent capability. Employment does not collapse, but role composition shifts quietly: entry-level transactional tasks shrink, hybrid digital-service roles grow, and workers caught between those transitions receive little formal support for the adjustment.</p>
-        <div class="teel-ev">
-          The RBA (2025) notes that productivity gains from technology often take time to materialise because firms must change workflows, train staff and adjust management practices — and this adjustment period is borne unevenly, with large firms adapting faster while SMEs and casual workers absorb the friction.
-          <cite>RBA 2025, <em>Technology Investment and AI</em>, Bulletin November.</cite>
-        </div>
-        <p class="teel-l">In the baseline scenario, the prediction rent accrues to incumbents — the store looks the same, but the power structure behind it does not.</p>
-      </div>
-    </div>
-
-    <!-- Panel B -->
-    <div id="pb" class="panel fu">
-      <div class="sc-meta">
-        <div class="sc-mi">
-          <div class="sc-ml">Policy Inputs</div>
-          <div class="sc-mv">Consumer Data Right extended to retail; JSA skills compact funded via TAFE; ACCC gains algorithmic pricing monitoring powers; targeted SME AI adoption grants introduced.</div>
-        </div>
-        <div class="sc-mi">
-          <div class="sc-ml">Productivity Outcome</div>
-          <div class="sc-mv hl-e">Index 100 → 132 by 2030 — strong gains, broadly distributed across firm sizes and worker categories.</div>
-        </div>
-      </div>
-      <div class="teel">
-        <p class="teel-t">The upside scenario is shared productivity: AI adoption is supported by practical training, accessible data infrastructure, transparent pricing rules and targeted support for smaller retailers — making the prediction rent a sector-wide productivity gain rather than a corporate moat.</p>
-        <p class="teel-e1">A regional grocer accesses affordable demand-forecasting tools without surrendering customer data to a major platform. A small fashion retailer personalises customer communications with tools she controls. Workers in large retailers receive practical training in AI-assisted inventory management and customer data rights, rather than simply being supervised by algorithmic rosters they cannot interrogate or challenge. The prediction rent is not eliminated — Woolworths and Coles still hold scale advantages — but its concentration is moderated by data access, skills investment and competitive oversight that functions in real time.</p>
-        <div class="teel-ev">
-          Jobs and Skills Australia (2025) argues that adaptation, lifelong learning and accessible training will be essential as generative AI changes skills demand across the economy. The Productivity Commission (2025) supports an outcomes-based regulatory approach that enables productivity while managing concentration risk, emphasising that data access policy is as important as technology investment policy.
-          <cite>JSA 2025, <em>Our Gen AI Transition</em>; Productivity Commission 2025, Inquiry Report No. 111.</cite>
-        </div>
-        <p class="teel-l">Shared productivity requires institutional design — it will not happen automatically because AI tools become cheaper; without deliberate investment, the upside scenario remains technically available but practically inaccessible to the firms and workers who need it most.</p>
-      </div>
-    </div>
-
-    <!-- Panel C -->
-    <div id="pc" class="panel fu">
-      <div class="sc-meta">
-        <div class="sc-mi">
-          <div class="sc-ml">Policy Inputs</div>
-          <div class="sc-mv">Regulatory lag; no data portability; no antitrust response to algorithmic market power; skills investment deferred past 2028.</div>
-        </div>
-        <div class="sc-mi">
-          <div class="sc-ml">Productivity Outcome</div>
-          <div class="sc-mv hl-r">Index 100 → 112 by 2030 — aggregate efficiency gains offset by market dysfunction, reduced competition and consumer harm.</div>
-        </div>
-      </div>
-      <div class="teel">
-        <p class="teel-t">The downside scenario is algorithmic concentration: AI deepens the market power of retailers that already dominate the sector, making retail more efficient at the aggregate level while making competition less visible and consumer harm harder to detect or challenge.</p>
-        <p class="teel-e1">The ACCC (2025a) already warns that Australia's grocery sector is oligopolistic with limited incentives for aggressive price competition. In this scenario, AI deepens that structure: Woolworths and Coles use superior first-party data to train stronger personalisation models, negotiate with suppliers from greater informational advantage, and implement dynamic pricing that regulatory agencies — equipped with tools designed for observable price collusion — cannot easily detect or challenge. The ACCC's (2025b) concern about digital platform market power becomes a retail concern: AI-enabled concentration is structurally invisible because its mechanism is prediction and personalisation rather than explicit price coordination.</p>
-        <div class="teel-ev">
-          Acemoglu and Restrepo (2018) warn that productivity gains from automation do not automatically translate into proportional wage or labour benefits — and can instead concentrate surplus in capital, particularly when labour has limited bargaining power and regulatory oversight is slow to adapt.
-          <cite>Acemoglu &amp; Restrepo 2018, <em>Artificial Intelligence, Automation and Work</em>, NBER Working Paper No. 24196.</cite>
-        </div>
-        <p class="teel-l">In the downside scenario, the prediction rent becomes a structural barrier to competition — retail efficiency rises while retail equity falls, and the gap between the two is hidden inside algorithms that neither consumers nor regulators can easily read.</p>
-      </div>
-    </div>
-
-  </div><!-- /wrap -->
-</div><!-- /wrap-w -->
+  </div><!-- /story-wrap -->
+</div>
 </section>
 
-<!-- ═══════════════ POLICY ════════════════════════════════ -->
-<section id="policy" class="sec">
+<!-- ══════════════════════════════════════════ SCENARIO SIMULATOR -->
+<section id="scenarios" class="sec">
+<div class="wrap">
+
+  <div class="fu"><span class="eyebrow">Scenario Analysis</span></div>
+  <h2 class="fu">Build Your Own Forecast</h2>
+  <p class="fu" style="color:var(--txm);margin-bottom:1.5rem">AI capability in 2030 is held constant across all scenarios. What changes is the policy environment. Use the sliders below to explore how three specific policy choices shift the productivity outlook — and which scenario they push us toward. This simulator uses an illustrative model calibrated against McKinsey (2023) estimates; it shows directional sensitivity, not precise projections.</p>
+
+  <div class="sim-wrap fu">
+    <!-- CONTROLS -->
+    <div class="sim-controls">
+
+      <div class="sim-slider-group">
+        <div class="sim-label-row">
+          <span>ACCC Enforcement Strength</span>
+          <span class="sim-val" id="v-accc">30%</span>
+        </div>
+        <input type="range" id="sl-accc" min="0" max="100" value="30">
+        <p style="font-size:.74rem;color:var(--txm);margin-top:.4rem">How aggressively does the ACCC act on algorithmic pricing conduct and platform dependency in retail?</p>
+      </div>
+
+      <div class="sim-slider-group">
+        <div class="sim-label-row">
+          <span>Skills Compact Investment</span>
+          <span class="sim-val" id="v-skills">$0M</span>
+        </div>
+        <input type="range" id="sl-skills" min="0" max="500" value="0" step="10">
+        <p style="font-size:.74rem;color:var(--txm);margin-top:.4rem">Annual government investment in retail-specific AI skills training delivered through TAFE and industry partnerships.</p>
+      </div>
+
+      <div class="sim-toggle-row">
+        <span>Consumer Data Right Extended to Retail</span>
+        <label class="toggle">
+          <input type="checkbox" id="tog-cdr">
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+      <p style="font-size:.74rem;color:var(--txm);margin-top:.5rem">Allows consumers to access, correct and port their retail data — reducing the information asymmetry that makes personalisation powerful for retailers and opaque for customers.</p>
+
+      <div class="sim-outcome">
+        <div class="sim-score-label">2030 Productivity Index</div>
+        <div class="sim-score" id="sim-score">118</div>
+        <div style="font-size:.7rem;color:var(--txm);margin-bottom:.5rem">(2024 baseline = 100)</div>
+        <span class="sim-scenario-name" id="sim-label" style="color:var(--blue);border-color:rgba(56,189,248,.3);background:var(--blue-d)">Quiet Automation</span>
+      </div>
+
+    </div><!-- /sim-controls -->
+
+    <!-- CHART -->
+    <div>
+      <div class="cbox" style="margin:0">
+        <div class="ctitle">Retail Productivity Index · 2024–2030</div>
+        <canvas id="cSim" height="310"></canvas>
+        <p class="cnote">The teal line updates as you adjust policy sliders. Reference lines show the three fixed scenarios for comparison.</p>
+      </div>
+    </div>
+
+  </div><!-- /sim-wrap -->
+
+  <!-- Scenario narrative tabs -->
+  <div style="margin-top:3.5rem">
+    <h3 class="fu">Understanding Each Scenario</h3>
+    <div class="tabs fu">
+      <button class="tab ta" onclick="sw('a')"><span style="background:var(--blue-d);color:var(--blue);border:1px solid rgba(56,189,248,.3);padding:.1rem .4rem;font-size:.6rem;margin-right:.4rem">A</span>Quiet Automation</button>
+      <button class="tab" onclick="sw('b')"><span style="background:var(--green-d);color:var(--green);border:1px solid rgba(52,211,153,.3);padding:.1rem .4rem;font-size:.6rem;margin-right:.4rem">B</span>Shared Productivity</button>
+      <button class="tab" onclick="sw('c')"><span style="background:var(--red-d);color:var(--red);border:1px solid rgba(248,113,113,.3);padding:.1rem .4rem;font-size:.6rem;margin-right:.4rem">C</span>Algorithmic Concentration</button>
+    </div>
+
+    <div id="pa" class="panel on fu">
+      <div class="sc-meta">
+        <div class="sc-mi"><div class="sc-ml">Policy Inputs</div><div class="sc-mv">ACCC Inquiry recommendations partially implemented; no data portability; skills compact unfunded; algorithmic pricing oversight delayed by legislative cycle.</div></div>
+        <div class="sc-mi"><div class="sc-ml">2030 Outcome</div><div class="sc-mv hl-b">Index ≈ 118 — moderate productivity gains concentrated at the top of the market.</div></div>
+      </div>
+      <div class="teel">
+        <p class="teel-t">The baseline isn't catastrophic. It's quietly unfair — and quietly inefficient in ways that only become visible over a longer horizon.</p>
+        <p class="teel-e1">Large retailers adopt AI for forecasting, rostering and personalisation. Productivity improves, but gains concentrate at the top. Smaller retailers can access AI only through third-party platforms they don't control, deepening dependency rather than building capability. Employment doesn't collapse, but role composition shifts quietly: entry-level transactional tasks shrink, hybrid digital-service roles grow, and workers caught in the transition receive little formal support. The algorithm sets the roster. The worker adapts.</p>
+        <div class="teel-ev">The RBA (2025) notes that productivity gains from technology often take time to materialise because firms must change workflows, train staff and adjust management practices — and this adjustment is borne unevenly, with large firms adapting faster while SMEs and casual workers absorb the friction.<cite>RBA 2025, <em>Technology Investment and AI</em>, Bulletin November.</cite></div>
+        <p class="teel-l">In the baseline scenario, the prediction rent accrues to incumbents. The store looks the same; the power structure behind it does not.</p>
+      </div>
+    </div>
+
+    <div id="pb" class="panel fu">
+      <div class="sc-meta">
+        <div class="sc-mi"><div class="sc-ml">Policy Inputs</div><div class="sc-mv">CDR extended to retail; JSA skills compact funded (~$200M+) via TAFE; ACCC gains algorithmic pricing oversight; SME AI adoption grants introduced.</div></div>
+        <div class="sc-mi"><div class="sc-ml">2030 Outcome</div><div class="sc-mv hl-e">Index ≈ 132 — strong productivity gains broadly distributed across firm sizes and worker categories.</div></div>
+      </div>
+      <div class="teel">
+        <p class="teel-t">The upside scenario requires institutional design, not technological optimism — it will not happen because AI tools get cheaper.</p>
+        <p class="teel-e1">A regional grocer accesses affordable demand-forecasting tools without surrendering customer data to a platform she doesn't control. A small fashion retailer personalises communications without handing her customer relationships to Woolworths' ecosystem. Workers in large retailers receive practical training in AI-assisted tools rather than simply being managed by them. The prediction rent isn't eliminated — scale advantages remain — but its concentration is moderated by data access, skills investment and competitive oversight that functions in real time, not retrospectively.</p>
+        <div class="teel-ev">Jobs and Skills Australia (2025) argues that adaptation and accessible training are essential for equitable AI transition. The Productivity Commission (2025) supports outcomes-based regulation that enables productivity while managing concentration risk — noting that data access policy is as important as technology investment policy.<cite>JSA 2025; Productivity Commission 2025, Inquiry Report No. 111.</cite></div>
+        <p class="teel-l">Shared productivity is possible. It requires Australia to treat retail AI as a public policy problem, not just a market outcome.</p>
+      </div>
+    </div>
+
+    <div id="pc" class="panel fu">
+      <div class="sc-meta">
+        <div class="sc-mi"><div class="sc-ml">Policy Inputs</div><div class="sc-mv">Regulatory lag; no data portability; no antitrust response to algorithmic market power; skills investment deferred; algorithmic pricing unchallenged.</div></div>
+        <div class="sc-mi"><div class="sc-ml">2030 Outcome</div><div class="sc-mv hl-r">Index ≈ 112 — efficiency gains offset by market dysfunction, reduced competition and concentrated consumer harm.</div></div>
+      </div>
+      <div class="teel">
+        <p class="teel-t">The downside scenario is not a dystopia — it's the unremarkable result of leaving an already-concentrated market to self-regulate through a technology transition.</p>
+        <p class="teel-e1">Woolworths and Coles use superior first-party data to train stronger personalisation models, negotiate with suppliers from greater informational advantage, and implement dynamic pricing that regulators — equipped with tools designed for observable price collusion — cannot effectively challenge. The ACCC's concern about digital platform power (2025b) becomes a retail concern: AI-enabled concentration is structurally invisible because its mechanism is prediction, not coordination. Smaller retailers deepen their dependence on platforms they don't control. Workers on algorithmic rosters have less negotiating leverage than workers managed by humans.</p>
+        <div class="teel-ev">Acemoglu and Restrepo (2018) warn that automation's productivity gains do not automatically translate into proportional labour benefits — and can concentrate surplus in capital, particularly when labour bargaining power is weak and regulatory response is slow.<cite>Acemoglu &amp; Restrepo 2018, NBER Working Paper No. 24196.</cite></div>
+        <p class="teel-l">The prediction rent becomes a structural barrier to competition — efficiency rises, equity falls, and the gap between the two is hidden inside models that neither consumers nor regulators can read.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════ POLICY -->
+<section id="policy" class="sec sec-alt">
 <div class="wrap">
 
   <div class="fu"><span class="eyebrow">Policy Playbook</span></div>
-  <h2 class="fu">Making the Forecast Better</h2>
-  <p class="fu" style="color:var(--txm);margin-bottom:2rem">Three targeted interventions — chosen because they address the prediction rent directly, rather than AI in the abstract — can shift the trajectory from baseline toward the upside. Each policy names a mechanism, not a goal.</p>
+  <h2 class="fu">The Rules That Shape the Outcome</h2>
+  <p class="fu" style="color:var(--txm);margin-bottom:1.8rem">These three policies don't target AI in the abstract. They target the specific mechanisms through which the prediction rent concentrates. Each one names a mechanism, a change, and a tradeoff.</p>
 
   <div class="pol-grid fu">
 
     <div class="pol">
-      <div class="pol-n">Policy 01 · Skills</div>
+      <div class="pol-n">Policy 01 · Labour</div>
       <h3>Retail AI Skills Compact</h3>
-      <p>A sector-specific, TAFE-delivered program in AI-assisted stock management, algorithmic roster interpretation, customer data rights and AI system supervision. Not a generic digital literacy campaign — practical tools for the shop floor, accessible to casual and migrant workers, not just head office.</p>
-      <p style="margin-top:.6rem">With 50% part-time employment and high casual workforce shares, training that only reaches corporate headquarters misses the workers who will absorb the greatest task disruption. The policy must be designed for the workforce that actually exists.</p>
-      <div class="kpi-row">
-        <span class="kpi">TAFE delivery</span>
-        <span class="kpi">Casual-accessible</span>
-        <span class="kpi">JSA partnership</span>
-      </div>
+      <p>Sector-specific, TAFE-delivered training in AI-assisted stock management, algorithmic roster tools, customer data rights and AI supervision skills. Not a generic digital literacy program — practical tools for the workers who will actually interact with these systems.</p>
+      <p style="margin-top:.65rem">The key design constraint: with 50% part-time employment and high casual and migrant workforce shares, training that only reaches head office bypasses the workers most vulnerable to algorithmic task redesign.</p>
+      <p style="margin-top:.65rem"><strong>Tradeoff:</strong> Costs public funding. Risk is low uptake if designed for head office rather than shop floor. KPI: participation rates across casual and part-time workers, not just full-time staff.</p>
+      <div class="kpi-row"><span class="kpi">TAFE delivery</span><span class="kpi">Casual-accessible</span><span class="kpi">JSA partnership</span></div>
     </div>
 
     <div class="pol">
       <div class="pol-n">Policy 02 · Data Rights</div>
       <h3>Extend Consumer Data Right to Retail</h3>
-      <p>The current CDR framework covers banking and energy. Retail data — loyalty programs, purchase history, personalisation profiles — is equally powerful and equally unportable. Extension would allow consumers to understand, correct and share their own retail data, directly reducing the information asymmetry that makes personalisation powerful for retailers and opaque for customers.</p>
-      <p style="margin-top:.6rem">A consumer who can access their own data — and choose where it goes — changes the bargaining structure without banning personalisation itself.</p>
-      <div class="kpi-row">
-        <span class="kpi">CDR extension</span>
-        <span class="kpi">Consumer portability</span>
-        <span class="kpi">ACCC oversight</span>
-      </div>
+      <p>The CDR framework currently covers banking and energy. Retail loyalty data — purchase history, inferred preferences, pricing sensitivity — is equally powerful and entirely unportable. Extension gives consumers the right to access, correct and transfer their own retail data.</p>
+      <p style="margin-top:.65rem">This directly addresses the Hayek Inversion: a consumer who can access their own data changes the information asymmetry without banning personalisation itself.</p>
+      <p style="margin-top:.65rem"><strong>Tradeoff:</strong> Implementation costs for retailers. Risk of low consumer engagement. The value accrues primarily to engaged consumers; disengaged consumers remain vulnerable to information asymmetry.</p>
+      <div class="kpi-row"><span class="kpi">CDR extension</span><span class="kpi">Consumer portability</span><span class="kpi">ACCC oversight</span></div>
     </div>
 
     <div class="pol">
       <div class="pol-n">Policy 03 · Competition</div>
-      <h3>Algorithmic Pricing Oversight</h3>
-      <p>Equip the ACCC with the mandate and technical capability to monitor algorithmic pricing conduct and personalised promotional practices. The Supermarkets Inquiry revealed that price signals were already difficult to interpret; AI-driven dynamic pricing will make this vastly harder without targeted regulatory capability.</p>
-      <p style="margin-top:.6rem">An outcomes-based approach — the Productivity Commission's (2025) preferred model — means monitoring competitive conduct and consumer outcomes, not attempting to proscribe specific technologies.</p>
-      <div class="kpi-row">
-        <span class="kpi">ACCC mandate</span>
-        <span class="kpi">Outcomes-based</span>
-        <span class="kpi">SME protection</span>
-      </div>
+      <h3>Algorithmic Pricing Oversight for ACCC</h3>
+      <p>Equip the ACCC with the mandate and technical capability to monitor algorithmic pricing conduct and personalised promotional practices in real time. The Supermarkets Inquiry showed price signals were already hard to interpret; AI makes this structural.</p>
+      <p style="margin-top:.65rem">An outcomes-based approach — the Productivity Commission's (2025) preferred model — monitors competitive conduct and consumer outcomes rather than attempting to ban specific technologies.</p>
+      <p style="margin-top:.65rem"><strong>Tradeoff:</strong> Regulatory capacity is hard to build; algorithmic auditing is a nascent field. Risk of regulatory capture or false negatives. The alternative — no oversight — is worse.</p>
+      <div class="kpi-row"><span class="kpi">ACCC mandate</span><span class="kpi">Outcomes-based</span><span class="kpi">SME protection</span></div>
     </div>
 
-  </div><!-- /pol-grid -->
+  </div>
 
-  <h4 style="margin:2.5rem 0 1.2rem">Implementation Timeline</h4>
-  <div class="timeline fu">
-    <div class="tl-item">
-      <div class="tl-yr">2026 – 2027</div>
-      <div class="tl-tx">Consumer Data Right scoping study for retail sector; JSA Retail AI Skills Compact pilot through five TAFE campuses; ACCC algorithmic pricing monitoring framework consultation opens.</div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-yr">2027 – 2028</div>
-      <div class="tl-tx">CDR retail extension legislated; Skills Compact scaled to national delivery; ACCC monitoring powers extended; SME AI adoption grant program launched with AU$50M initial allocation.</div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-yr">2028 – 2030</div>
-      <div class="tl-tx">KPI review: CDR uptake rates, wage outcomes in AI-augmented retail roles, SME market share stability, consumer transparency metrics, and algorithmic pricing enforcement actions assessed against scenario targets.</div>
-    </div>
+  <h4 style="margin:2.2rem 0 1.1rem">Implementation Sequence</h4>
+  <div class="tl fu">
+    <div class="tl-item"><div class="tl-yr">2026–2027</div><div class="tl-tx">CDR scoping study for retail sector; JSA Skills Compact pilot at five TAFE campuses; ACCC algorithmic pricing monitoring framework consultation.</div></div>
+    <div class="tl-item"><div class="tl-yr">2027–2028</div><div class="tl-tx">CDR retail extension legislated; Skills Compact scaled nationally; ACCC monitoring powers extended; SME AI adoption grants launched.</div></div>
+    <div class="tl-item"><div class="tl-yr">2028–2030</div><div class="tl-tx">KPI review: CDR uptake rates, wage outcomes in AI-augmented retail roles, SME market share stability, consumer price transparency metrics, ACCC enforcement actions.</div></div>
   </div>
 
 </div>
 </section>
 
-<!-- ═══════════════ METHODS ═══════════════════════════════ -->
-<section id="methods" class="sec sec-alt">
+<!-- ══════════════════════════════════════════ METHODS -->
+<section id="methods" class="sec">
 <div class="wrap">
 
   <div class="fu"><span class="eyebrow">Methods &amp; Data</span></div>
-  <h2 class="fu">How This Forecast Was Built</h2>
+  <h2 class="fu" style="font-size:1.8rem">How This Forecast Was Built</h2>
 
   <div class="m-grid fu">
     <div class="m-item">
-      <h4>Primary Data Sources</h4>
-      <p>ABS Retail Trade and Household Spending Indicators (2025, 2026a); Jobs and Skills Australia Retail Industry Profile (2026) and Gen AI Transition Report (2025); RBA Technology and AI Bulletin (November 2025); ACCC Supermarkets Inquiry Final Report (2025a) and Digital Platform Services Inquiry (2025b).</p>
+      <h4>Verified Data Sources</h4>
+      <p>ABS Retail Trade (2025) and Monthly Household Spending Indicator (2026a); Jobs and Skills Australia Retail Industry Profile (2026) and Gen AI Transition (2025); RBA Technology and AI Bulletin (November 2025); ACCC Supermarkets Inquiry (2025a) and Digital Platform Services Inquiry (2025b); Deloitte Access Economics Retail Forecasts (2026).</p>
     </div>
     <div class="m-item">
-      <h4>Economic Framework</h4>
-      <p>Autor (2015) task-based model of automation and labour demand; Acemoglu and Restrepo (2018) displacement-productivity-new tasks framework; Hayek (1945) on distributed knowledge and information asymmetry; McKinsey (2023) generative AI productivity estimates; Productivity Commission (2025) outcomes-based regulatory approach.</p>
+      <h4>Economic Theory Base</h4>
+      <p>Autor (2015) task-based model of automation and labour demand; Acemoglu &amp; Restrepo (2018) displacement-productivity-new tasks framework; Hayek (1945) on dispersed knowledge and the price system; McKinsey (2023) generative AI productivity estimates; Productivity Commission (2025) outcomes-based regulatory model.</p>
     </div>
     <div class="m-item">
       <h4>AI Tooling Disclosure</h4>
-      <p>Generative AI tools (Claude, Anthropic) were used to assist in synthesising literature, stress-testing scenario logic and refining narrative structure. All data points were independently verified against primary sources. The prediction rent concept, theoretical framing and all policy arguments are the author's own.</p>
+      <p>Generative AI tools (Claude, Anthropic) were used to assist in synthesising literature, stress-testing scenario logic and refining narrative structure. All data points were verified against primary sources before use. The prediction rent concept, the Hayek Inversion framing, and all policy arguments are the author's own.</p>
     </div>
     <div class="m-item">
-      <h4>Limitations &amp; Uncertainty</h4>
-      <p>Productivity estimates draw from global McKinsey figures and may overstate gains in Australia's relatively concentrated, lower-productivity retail market. Scenario index values are illustrative of direction and magnitude, not precise projections. Three structural uncertainties apply: faster AI capability diffusion, slower regulatory adaptation, and distributional effects diverging from historical technology transitions.</p>
+      <h4>Limitations &amp; What Could Make This Wrong</h4>
+      <p>McKinsey productivity figures are global estimates and may overstate gains in Australia's specific market context. Scenario index values are directional illustrations, not precise projections. Three structural breaks could invalidate the forecast: faster-than-expected AI capability diffusion; a regulatory response stronger than assumed; or distributional effects that diverge significantly from historical technology transitions. These uncertainties are the forecast's most important boundary conditions — not its weaknesses.</p>
     </div>
   </div>
 
 </div>
 </section>
 
-<!-- ═══════════════ CONCLUSION ════════════════════════════ -->
-<section class="sec">
+<!-- ══════════════════════════════════════════ CONCLUSION -->
+<section class="sec sec-alt">
 <div class="wrap">
-
   <div class="fu"><span class="eyebrow">Conclusion</span></div>
   <h2 class="fu">The Checkout Is a Choice</h2>
 
   <div class="teel fu">
-    <p class="teel-t">By 2030, the most powerful force in Australian retail will be invisible — embedded in forecast models, loyalty algorithms, dynamic rosters and personalised digital shelves that most customers will never directly see or interrogate.</p>
-    <p class="teel-e1">The visible store may still feel familiar. The decision architecture behind it will not. The prediction rent is real and it is growing: each dataset accumulated, each forecast improved, each personalisation refined adds to an informational advantage that compounds at the top of an already concentrated market. The question is not whether AI reshapes Australian retail — it will, and the process has already begun. The question is whether the rules, institutions and investments Australia puts in place before 2030 ensure that the productivity gains from prediction are distributed across 1.34 million workers, millions of consumers and thousands of small businesses — or whether they accumulate quietly in the balance sheets of two companies that already dominate the sector.</p>
+    <p class="teel-t">By 2030, the most powerful force in Australian retail will be invisible — running in forecast models, loyalty algorithms and dynamic rosters that neither customers nor most workers will ever directly interact with.</p>
+    <p class="teel-e1">The visible store may feel familiar. The infrastructure behind it will not. The prediction rent is real, it is growing, and its distribution is not determined by the technology — it is determined by the policy choices Australia makes before the structural advantage becomes self-reinforcing and permanent. The three interventions identified in this forecast — a retail AI skills compact, extension of the Consumer Data Right to retail, and algorithmic pricing oversight for the ACCC — are not radical proposals. They are the minimum institutional response required to keep the upside scenario in reach.</p>
     <div class="teel-ev">
-      The three policy interventions identified in this forecast — a retail AI skills compact, extension of the Consumer Data Right to retail, and algorithmic pricing oversight for the ACCC — are not radical proposals. They are the minimum institutional response required to shift the trajectory from the baseline scenario to the upside. They cost less than the distributional harm of getting this wrong.
-      <cite>Productivity Commission 2025; JSA 2025; ACCC 2025a, 2025b.</cite>
+      The ACCC (2025a), Productivity Commission (2025), and JSA (2025) each identify specific mechanisms through which AI adoption in retail could either broaden or concentrate its benefits. The policy levers exist. The question is timing: structural data advantages in AI compound quickly, and regulatory catch-up in data-rich markets has historically been slow.
+      <cite>ACCC 2025a; Productivity Commission 2025; JSA 2025.</cite>
     </div>
-    <p class="teel-l">The technology is arriving regardless. The future checkout is not a machine — it is a choice about what kind of economy Australia builds around one.</p>
+    <p class="teel-l">There is no price of milk anymore — not in the sense Hayek meant, a shared observable signal available to everyone equally. The checkout of 2030 is invisible, personalised, and already forming. The question is only whether Australia shapes it, or inherits it.</p>
   </div>
 
 </div>
 </section>
 
-<!-- ═══════════════ REFERENCES ════════════════════════════ -->
-<section id="refs" class="sec sec-alt">
+<!-- ══════════════════════════════════════════ REFERENCES -->
+<section id="refs" class="sec">
 <div class="wrap">
-
   <div class="fu"><span class="eyebrow">References</span></div>
-  <h2 class="fu" style="font-size:1.5rem">Reference List</h2>
-
+  <h2 class="fu" style="font-size:1.6rem">Reference List</h2>
   <ul class="refs fu">
     <li>ABS 2025, <em>Retail Trade, Australia, June 2025</em>, Australian Bureau of Statistics, Canberra.</li>
     <li>ABS 2026a, <em>Monthly Household Spending Indicator, April 2026</em>, Australian Bureau of Statistics, Canberra.</li>
@@ -868,275 +697,243 @@ footer{
     <li>Productivity Commission 2025, <em>Harnessing Data and Digital Technology</em>, Inquiry Report No. 111, Australian Government, Canberra.</li>
     <li>Reserve Bank of Australia 2025, <em>Technology Investment and AI: What Are Firms Telling Us?</em>, RBA Bulletin, November.</li>
   </ul>
-
 </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div><strong style="color:var(--txb)">The Invisible Checkout</strong> &nbsp;·&nbsp; ECON1626 Assessment 3 &nbsp;·&nbsp; RMIT University 2026</div>
   <div>Hosted on <a href="https://pages.github.com" target="_blank">GitHub Pages</a></div>
 </footer>
 
-<!-- ═══════════════ SCRIPTS ════════════════════════════════ -->
 <script>
-/* ── Progress bar ─────────────────────────────────────── */
+/* ── PROGRESS BAR ─────────────────────────────────────── */
 const prog = document.getElementById('prog');
 window.addEventListener('scroll', () => {
-  const pct = window.scrollY / (document.documentElement.scrollHeight - innerHeight) * 100;
-  prog.style.width = Math.min(pct, 100) + '%';
-}, {passive: true});
+  const p = window.scrollY / (document.documentElement.scrollHeight - innerHeight) * 100;
+  prog.style.width = Math.min(p,100)+'%';
+},{passive:true});
 
-/* ── Scroll fade-up ───────────────────────────────────── */
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
-}, {threshold: 0.08, rootMargin:'0px 0px -30px 0px'});
+/* ── FADE UP ──────────────────────────────────────────── */
+const obs = new IntersectionObserver(ee => ee.forEach(e => {
+  if(e.isIntersecting) e.target.classList.add('vis');
+}),{threshold:0.08,rootMargin:'0px 0px -28px 0px'});
 document.querySelectorAll('.fu').forEach(el => obs.observe(el));
 
-/* ── Counter animation ────────────────────────────────── */
-function animCnt(el) {
-  const t = parseFloat(el.dataset.t);
-  const dec = parseInt(el.dataset.dec || 0);
-  const dur = 1600;
+/* ── TYPEWRITER ───────────────────────────────────────── */
+const txt = "How artificial intelligence is rewriting the economics of Australian retail — and who captures the gains — by 2030.";
+const tw = document.getElementById('typewriter');
+let i = 0;
+function type(){
+  if(i < txt.length){ tw.textContent += txt[i++]; setTimeout(type, i<30?60:28); }
+}
+setTimeout(type, 900);
+
+/* ── COUNTER ANIMATION ────────────────────────────────── */
+function animCnt(el){
+  const t = parseFloat(el.dataset.t), dec = parseInt(el.dataset.dec||0), dur = 1600;
   const t0 = performance.now();
-  function step(now) {
-    const p = Math.min((now - t0) / dur, 1);
-    const e = 1 - Math.pow(1 - p, 3);
-    const v = e * t;
-    el.textContent = t >= 1000 ? Math.round(v).toLocaleString('en-AU') : v.toFixed(dec);
-    if (p < 1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
+  (function step(now){
+    const p = Math.min((now-t0)/dur,1), e = 1-Math.pow(1-p,3), v = e*t;
+    el.textContent = t>=1000 ? Math.round(v).toLocaleString('en-AU') : v.toFixed(dec);
+    if(p<1) requestAnimationFrame(step);
+  })(t0);
 }
-const cobs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { animCnt(e.target); cobs.unobserve(e.target); } });
-}, {threshold: 0.5});
-document.querySelectorAll('.cnt').forEach(el => cobs.observe(el));
+const co = new IntersectionObserver(ee => ee.forEach(e=>{
+  if(e.isIntersecting){animCnt(e.target);co.unobserve(e.target);}
+}),{threshold:0.5});
+document.querySelectorAll('.cnt').forEach(el => co.observe(el));
 
-/* ── Scenario switcher ────────────────────────────────── */
-function sw(s) {
-  const tabs = document.querySelectorAll('.tab');
-  tabs.forEach(t => t.classList.remove('ta','tb','tc'));
-  tabs[{a:0,b:1,c:2}[s]].classList.add({a:'ta',b:'tb',c:'tc'}[s]);
-  ['a','b','c'].forEach(id => {
-    const p = document.getElementById('p'+id);
-    p.classList.toggle('on', id === s);
+/* ── SCROLLYTELLING ───────────────────────────────────── */
+const panels = document.querySelectorAll('.story-panel');
+const slots = {prod:'slot-prod', conc:'slot-conc', task:'slot-task'};
+const labels = {prod:'Channel 01 · Operational Prediction', conc:'Channel 02 · Personalisation', task:'Channel 03 · Task Redesign'};
+const lbl = document.getElementById('chart-label');
+
+const storyObs = new IntersectionObserver(ee => {
+  ee.forEach(e => {
+    if(e.isIntersecting){
+      const cid = e.target.dataset.chart;
+      Object.values(slots).forEach(s => document.getElementById(s).classList.remove('active'));
+      document.getElementById(slots[cid]).classList.add('active');
+      lbl.textContent = labels[cid];
+    }
   });
-  highlightScen(s);
+},{threshold:0.3, rootMargin:'-10% 0px -50% 0px'});
+panels.forEach(p => storyObs.observe(p));
+
+/* ── SCENARIO SWITCHER ────────────────────────────────── */
+function sw(s){
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('ta','tb','tc'));
+  document.querySelectorAll('.tab')[{a:0,b:1,c:2}[s]].classList.add({a:'ta',b:'tb',c:'tc'}[s]);
+  ['a','b','c'].forEach(id => document.getElementById('p'+id).classList.toggle('on', id===s));
 }
 
-/* ── Chart defaults ───────────────────────────────────── */
-Chart.defaults.color = '#64748b';
+/* ── CHART DEFAULTS ───────────────────────────────────── */
+Chart.defaults.color = '#5e7a96';
 Chart.defaults.borderColor = 'rgba(255,255,255,0.05)';
 Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
-const TT = {
-  backgroundColor:'#080f1a',
-  borderColor:'rgba(255,255,255,0.09)',
-  borderWidth:1,
-  titleColor:'#f1f5f9',
-  bodyColor:'#94a3b8',
-  padding:10,
-};
-function grid(){ return {color:'rgba(255,255,255,0.04)'} }
-function tick(){ return {color:'#64748b'} }
+const TT = {backgroundColor:'#07101c',borderColor:'rgba(255,255,255,0.08)',borderWidth:1,titleColor:'#eef4fd',bodyColor:'#8da5be',padding:10};
+const gr = ()=>({color:'rgba(255,255,255,0.04)'});
 
-/* ── Chart 1: Pressure ────────────────────────────────── */
-new Chart(document.getElementById('cPressure'), {
-  data: {
-    labels: ['2020','2021','2022','2023','2024','2025','2026F'],
-    datasets: [
-      {
-        type:'bar', label:'Turnover Growth (%)',
-        data: [-3.1, 7.8, 11.2, 6.1, 3.8, 4.9, 1.8],
-        backgroundColor: ctx => ctx.raw < 0 ? 'rgba(248,113,113,0.55)' : 'rgba(56,189,248,0.55)',
-        borderColor: ctx => ctx.raw < 0 ? '#f87171' : '#38bdf8',
-        borderWidth: 1, yAxisID:'y', order:2,
-      },
-      {
-        type:'line', label:'Cost Pressure Index (2020=100)',
-        data: [100, 104, 115, 119, 122, 124, 126],
-        borderColor:'#f59e0b', backgroundColor:'rgba(245,158,11,0.08)',
-        borderWidth:2, pointBackgroundColor:'#f59e0b', pointRadius:4,
-        fill:false, tension:0.4, yAxisID:'y1', order:1,
-      }
-    ]
-  },
-  options: {
-    responsive:true,
-    interaction:{mode:'index',intersect:false},
-    plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}}, tooltip:TT},
-    scales:{
-      x:{grid:grid(), ticks:tick()},
-      y:{position:'left', grid:grid(), ticks:{...tick(), callback:v=>v+'%'},
-         title:{display:true,text:'Turnover Growth %',color:'#64748b',font:{size:10}}},
-      y1:{position:'right', grid:{drawOnChartArea:false},
-          ticks:{color:'#f59e0b', callback:v=>v},
-          title:{display:true,text:'Cost Index',color:'#f59e0b',font:{size:10}}},
-    }
-  }
-});
-
-/* ── Chart 2: Productivity ────────────────────────────── */
-new Chart(document.getElementById('cProd'), {
-  type:'bar',
-  data: {
-    labels:['Inventory\nCost Reduction','Forecast\nAccuracy Gain','Personalisation\nRevenue Uplift','Labour\nEfficiency','Waste\nReduction'],
+/* ── CHART 1: PRESSURE ────────────────────────────────── */
+new Chart(document.getElementById('cPressure'),{
+  data:{
+    labels:['2020','2021','2022','2023','2024','2025','2026F'],
     datasets:[
-      {label:'Lower Bound (%)', data:[15,10,10,5,10],
-       backgroundColor:'rgba(56,189,248,0.28)', borderColor:'#38bdf8', borderWidth:1},
-      {label:'Upper Bound (%)', data:[20,40,15,12,25],
-       backgroundColor:'rgba(245,158,11,0.38)', borderColor:'#f59e0b', borderWidth:1},
+      {type:'bar',label:'Turnover Growth (%)',data:[-3.1,7.8,11.2,6.1,3.8,4.9,1.8],
+       backgroundColor:ctx=>ctx.raw<0?'rgba(248,113,113,0.5)':'rgba(56,189,248,0.5)',
+       borderColor:ctx=>ctx.raw<0?'#f87171':'#38bdf8',borderWidth:1,yAxisID:'y',order:2},
+      {type:'line',label:'Cost Pressure Index (2020=100)',data:[100,104,115,119,122,124,126],
+       borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,0.07)',borderWidth:2,
+       pointBackgroundColor:'#f59e0b',pointRadius:4,fill:false,tension:0.4,yAxisID:'y1',order:1},
     ]
   },
-  options:{
-    responsive:true,
-    interaction:{mode:'index',intersect:false},
-    plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}}, tooltip:TT},
+  options:{responsive:true,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{labels:{color:'#8da5be',font:{size:11}}},tooltip:TT},
     scales:{
-      x:{grid:grid(), ticks:{...tick(),font:{size:10}}},
-      y:{grid:grid(), ticks:{...tick(),callback:v=>v+'%'},
-         title:{display:true,text:'Estimated Improvement Range',color:'#64748b',font:{size:10}}},
-    }
-  }
+      x:{grid:gr(),ticks:{color:'#5e7a96'}},
+      y:{position:'left',grid:gr(),ticks:{color:'#5e7a96',callback:v=>v+'%'},
+         title:{display:true,text:'Turnover Growth %',color:'#5e7a96',font:{size:10}}},
+      y1:{position:'right',grid:{drawOnChartArea:false},ticks:{color:'#f59e0b',callback:v=>v},
+          title:{display:true,text:'Cost Index',color:'#f59e0b',font:{size:10}}},
+    }}
 });
 
-/* ── Chart 3: Concentration ───────────────────────────── */
-new Chart(document.getElementById('cConc'), {
+/* ── CHART 2: PRODUCTIVITY (sticky slot 1) ────────────── */
+new Chart(document.getElementById('cProd'),{
+  type:'bar',
+  data:{
+    labels:['Inventory\nCost Reduction','Forecast\nAccuracy','Personalisation\nRevenue','Labour\nEfficiency','Waste\nReduction'],
+    datasets:[
+      {label:'Lower bound (%)',data:[15,10,10,5,10],backgroundColor:'rgba(56,189,248,0.28)',borderColor:'#38bdf8',borderWidth:1},
+      {label:'Upper bound (%)',data:[20,40,15,12,25],backgroundColor:'rgba(245,158,11,0.38)',borderColor:'#f59e0b',borderWidth:1},
+    ]
+  },
+  options:{responsive:true,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{labels:{color:'#8da5be',font:{size:11}}},tooltip:TT},
+    scales:{x:{grid:gr(),ticks:{color:'#5e7a96',font:{size:10}}},
+            y:{grid:gr(),ticks:{color:'#5e7a96',callback:v=>v+'%'},
+               title:{display:true,text:'Estimated Improvement Range',color:'#5e7a96',font:{size:10}}}}}
+});
+
+/* ── CHART 3: CONCENTRATION (sticky slot 2) ───────────── */
+new Chart(document.getElementById('cConc'),{
   type:'doughnut',
   data:{
     labels:['Woolworths Group','Coles Group','Aldi','IGA / Independents','Amazon / Online','Other'],
-    datasets:[{
-      data:[36,29,10,15,5,5],
-      backgroundColor:[
-        'rgba(245,158,11,0.78)','rgba(56,189,248,0.78)',
-        'rgba(52,211,153,0.55)','rgba(148,163,184,0.38)',
-        'rgba(248,113,113,0.48)','rgba(100,116,139,0.35)',
-      ],
-      borderColor:['#f59e0b','#38bdf8','#34d399','#94a3b8','#f87171','#64748b'],
-      borderWidth:1.5, hoverOffset:8,
-    }]
+    datasets:[{data:[36,29,10,15,5,5],
+      backgroundColor:['rgba(245,158,11,0.8)','rgba(56,189,248,0.75)','rgba(52,211,153,0.55)',
+                       'rgba(148,163,184,0.35)','rgba(248,113,113,0.5)','rgba(94,122,150,0.4)'],
+      borderColor:['#f59e0b','#38bdf8','#34d399','#94a3b8','#f87171','#5e7a96'],
+      borderWidth:1.5,hoverOffset:7}]
   },
-  options:{
-    responsive:true, cutout:'60%',
-    plugins:{
-      legend:{position:'right', labels:{color:'#94a3b8',font:{size:11},padding:14,boxWidth:11}},
-      tooltip:{...TT, callbacks:{label:c=>` ${c.label}: ${c.raw}%`}},
-    }
-  }
+  options:{responsive:true,cutout:'60%',
+    plugins:{legend:{position:'right',labels:{color:'#8da5be',font:{size:10},padding:12,boxWidth:10}},
+             tooltip:{...TT,callbacks:{label:c=>` ${c.label}: ${c.raw}%`}}}}
 });
 
-/* ── Chart 4: Task bubble ─────────────────────────────── */
-new Chart(document.getElementById('cTask'), {
+/* ── CHART 4: TASK BUBBLE (sticky slot 3) ─────────────── */
+new Chart(document.getElementById('cTask'),{
   type:'bubble',
-  data:{
-    datasets:[
-      {
-        label:'High Automation Risk',
-        data:[
-          {x:85,y:-15,r:22,l:'Checkout / Cashiers'},
-          {x:72,y:-10,r:16,l:'Basic Stock Queries'},
-          {x:68,y:-9,r:15,l:'Warehouse Sorting'},
-        ],
-        backgroundColor:'rgba(248,113,113,0.38)', borderColor:'#f87171', borderWidth:1.5,
-      },
-      {
-        label:'Medium Automation Risk',
-        data:[
-          {x:58,y:-5,r:20,l:'Stock Handlers'},
-          {x:50,y:-3,r:15,l:'Online Fulfilment'},
-          {x:42,y:2,r:13,l:'Customer Service'},
-        ],
-        backgroundColor:'rgba(245,158,11,0.38)', borderColor:'#f59e0b', borderWidth:1.5,
-      },
-      {
-        label:'Low Risk / Augmented',
-        data:[
-          {x:24,y:8,r:14,l:'Store Managers'},
-          {x:16,y:12,r:11,l:'Visual Merchandising'},
-          {x:12,y:17,r:9,l:'Specialist Buyers'},
-        ],
-        backgroundColor:'rgba(56,189,248,0.38)', borderColor:'#38bdf8', borderWidth:1.5,
-      },
-      {
-        label:'New / Emerging Roles',
-        data:[
-          {x:7,y:26,r:8,l:'AI System Supervisors'},
-          {x:14,y:22,r:7,l:'Retail Data Analysts'},
-        ],
-        backgroundColor:'rgba(52,211,153,0.48)', borderColor:'#34d399', borderWidth:1.5,
-      },
-    ]
-  },
-  options:{
-    responsive:true,
-    plugins:{
-      legend:{labels:{color:'#94a3b8',font:{size:11}}},
-      tooltip:{...TT, callbacks:{label:c=>`${c.raw.l}: ${c.raw.x}% auto-risk, demand ${c.raw.y>0?'+':''}${c.raw.y}%`}},
-    },
+  data:{datasets:[
+    {label:'High automation risk',
+     data:[{x:85,y:-15,r:21,l:'Checkout / Cashiers'},{x:73,y:-10,r:15,l:'Basic Stock Queries'},{x:67,y:-9,r:14,l:'Warehouse Sorting'}],
+     backgroundColor:'rgba(248,113,113,0.38)',borderColor:'#f87171',borderWidth:1.5},
+    {label:'Medium automation risk',
+     data:[{x:58,y:-5,r:19,l:'Stock Handlers'},{x:50,y:-3,r:14,l:'Online Fulfilment'},{x:42,y:3,r:12,l:'Customer Service'}],
+     backgroundColor:'rgba(245,158,11,0.38)',borderColor:'#f59e0b',borderWidth:1.5},
+    {label:'Low risk / augmented',
+     data:[{x:24,y:8,r:13,l:'Store Managers'},{x:16,y:13,r:10,l:'Visual Merchandising'},{x:10,y:18,r:8,l:'Specialist Buyers'}],
+     backgroundColor:'rgba(56,189,248,0.38)',borderColor:'#38bdf8',borderWidth:1.5},
+    {label:'New / emerging roles',
+     data:[{x:7,y:26,r:8,l:'AI System Supervisors'},{x:14,y:21,r:7,l:'Retail Data Analysts'}],
+     backgroundColor:'rgba(52,211,153,0.5)',borderColor:'#34d399',borderWidth:1.5},
+  ]},
+  options:{responsive:true,
+    plugins:{legend:{labels:{color:'#8da5be',font:{size:10}}},
+             tooltip:{...TT,callbacks:{label:c=>`${c.raw.l}: ${c.raw.x}% risk, demand ${c.raw.y>0?'+':''}${c.raw.y}%`}}},
     scales:{
-      x:{min:0,max:100, grid:grid(), ticks:{...tick(),callback:v=>v+'%'},
-         title:{display:true,text:'← Lower Risk     Automation Risk     Higher Risk →',color:'#64748b',font:{size:10}}},
-      y:{min:-25,max:35, grid:grid(), ticks:{...tick(),callback:v=>(v>0?'+':'')+v+'%'},
-         title:{display:true,text:'Employment Demand Change by 2030',color:'#64748b',font:{size:10}}},
-    }
-  }
+      x:{min:0,max:100,grid:gr(),ticks:{color:'#5e7a96',callback:v=>v+'%'},
+         title:{display:true,text:'← Lower Risk    Automation Risk    Higher Risk →',color:'#5e7a96',font:{size:9}}},
+      y:{min:-25,max:35,grid:gr(),ticks:{color:'#5e7a96',callback:v=>(v>0?'+':'')+v+'%'},
+         title:{display:true,text:'Employment Demand Change',color:'#5e7a96',font:{size:9}}},
+    }}
 });
 
-/* ── Chart 5: Scenarios ───────────────────────────────── */
+/* ── SCENARIO SIMULATOR ───────────────────────────────── */
 const yrs = ['2024','2025','2026','2027','2028','2029','2030'];
-const sData = {
-  a:[100,102,105,108,111,114,118],
-  b:[100,103,107,113,119,126,132],
-  c:[100,101,103,105,107,110,112],
-};
-const sColors = {
-  a:{full:'#38bdf8', dim:'rgba(56,189,248,0.18)'},
-  b:{full:'#34d399', dim:'rgba(52,211,153,0.18)'},
-  c:{full:'#f87171', dim:'rgba(248,113,113,0.18)'},
-};
+// Fixed reference lines
+const refA = [100,102,105,108,111,114,118];
+const refB = [100,103,107,113,119,126,132];
+const refC = [100,101,103,105,107,110,112];
 
-const scenChart = new Chart(document.getElementById('cScen'), {
+const simChart = new Chart(document.getElementById('cSim'),{
   type:'line',
   data:{
     labels:yrs,
     datasets:[
-      {label:'A — Quiet Automation (Baseline)', data:sData.a,
-       borderColor:sColors.a.full, backgroundColor:'rgba(56,189,248,0.07)',
-       borderWidth:3, pointRadius:4, pointBackgroundColor:sColors.a.full,
-       fill:false, tension:0.4},
-      {label:'B — Shared Productivity (Upside)', data:sData.b,
-       borderColor:sColors.b.dim, backgroundColor:'rgba(52,211,153,0.04)',
-       borderWidth:1, pointRadius:3, pointBackgroundColor:sColors.b.dim,
-       fill:false, tension:0.4},
-      {label:'C — Algorithmic Concentration (Downside)', data:sData.c,
-       borderColor:sColors.c.dim, backgroundColor:'rgba(248,113,113,0.04)',
-       borderWidth:1, pointRadius:3, pointBackgroundColor:sColors.c.dim,
-       fill:false, tension:0.4, borderDash:[5,3]},
+      {label:'Your scenario',data:[...refA],borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,0.1)',
+       borderWidth:3,pointRadius:5,pointBackgroundColor:'#f59e0b',fill:false,tension:0.4,order:0},
+      {label:'A — Baseline',data:refA,borderColor:'rgba(56,189,248,0.3)',borderWidth:1.5,
+       pointRadius:2,fill:false,tension:0.4,borderDash:[],order:1},
+      {label:'B — Upside',data:refB,borderColor:'rgba(52,211,153,0.3)',borderWidth:1.5,
+       pointRadius:2,fill:false,tension:0.4,order:2},
+      {label:'C — Downside',data:refC,borderColor:'rgba(248,113,113,0.3)',borderWidth:1.5,
+       pointRadius:2,fill:false,tension:0.4,borderDash:[4,3],order:3},
     ]
   },
-  options:{
-    responsive:true,
-    interaction:{mode:'index',intersect:false},
-    plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}}, tooltip:TT},
+  options:{responsive:true,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{labels:{color:'#8da5be',font:{size:11}}},tooltip:TT},
     scales:{
-      x:{grid:grid(), ticks:tick()},
-      y:{min:96,max:138, grid:grid(), ticks:tick(),
-         title:{display:true,text:'Productivity Index (2024 = 100)',color:'#64748b',font:{size:10}}},
-    }
-  }
+      x:{grid:gr(),ticks:{color:'#5e7a96'}},
+      y:{min:96,max:138,grid:gr(),ticks:{color:'#5e7a96'},
+         title:{display:true,text:'Productivity Index (2024 = 100)',color:'#5e7a96',font:{size:10}}},
+    }}
 });
 
-function highlightScen(s) {
-  const keys = ['a','b','c'];
-  scenChart.data.datasets.forEach((ds,i) => {
-    const k = keys[i];
-    ds.borderColor = k === s ? sColors[k].full : sColors[k].dim;
-    ds.borderWidth = k === s ? 3 : 1;
-    ds.pointBackgroundColor = k === s ? sColors[k].full : sColors[k].dim;
-    ds.pointRadius = k === s ? 4 : 3;
+function calcSim(){
+  const accc = parseInt(document.getElementById('sl-accc').value);
+  const skills = parseInt(document.getElementById('sl-skills').value);
+  const cdr = document.getElementById('tog-cdr').checked;
+  // Each lever adds points toward 2030 endpoint, starting from downside base of 112
+  const base = 112;
+  const acccGain = (accc/100) * 8;      // 0 to 8 pts
+  const skillsGain = Math.log1p(skills/50) / Math.log1p(10) * 9; // log-diminishing, 0–9 pts
+  const cdrGain = cdr ? 3 : 0;
+  const total2030 = Math.round(base + acccGain + skillsGain + cdrGain);
+
+  // Interpolate yearly values toward total2030
+  const newData = yrs.map((_,i) => {
+    if(i === 0) return 100;
+    const t = i / (yrs.length - 1);
+    const ease = t < 0.5 ? 2*t*t : -1+(4-2*t)*t; // ease-in-out
+    return Math.round((100 + ease*(total2030-100))*10)/10;
   });
-  scenChart.update();
+
+  simChart.data.datasets[0].data = newData;
+  simChart.update('active');
+
+  document.getElementById('sim-score').textContent = total2030;
+  document.getElementById('v-accc').textContent = accc+'%';
+  document.getElementById('v-skills').textContent = '$'+skills+'M';
+
+  let name, col, bg, bord;
+  if(total2030 >= 128){ name='Shared Productivity';col='var(--green)';bg='var(--green-d)';bord='rgba(52,211,153,.3)'; }
+  else if(total2030 >= 116){ name='Quiet Automation';col='var(--blue)';bg='var(--blue-d)';bord='rgba(56,189,248,.3)'; }
+  else{ name='Algorithmic Concentration';col='var(--red)';bg='var(--red-d)';bord='rgba(248,113,113,.3)'; }
+
+  const lbl = document.getElementById('sim-label');
+  lbl.textContent = name;
+  lbl.style.color = col;
+  lbl.style.background = bg;
+  lbl.style.borderColor = bord;
+
+  const sc = document.getElementById('sim-score');
+  sc.style.color = col;
 }
+
+['sl-accc','sl-skills'].forEach(id => document.getElementById(id).addEventListener('input', calcSim));
+document.getElementById('tog-cdr').addEventListener('change', calcSim);
 </script>
 </body>
 </html>
