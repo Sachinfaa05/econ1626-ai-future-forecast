@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Invisible Checkout — AI & Australian Retail 2030</title>
+<title>The Invisible Checkout — AI & Australian Retail 2030 | ECON1626</title>
 <meta name="description" content="An interactive forecast on AI, the prediction rent, and Australian retail by 2030.">
 <meta name="author" content="ECON1626 — RMIT University 2026">
 <meta property="og:title" content="The Invisible Checkout — AI & Australian Retail 2030">
@@ -196,6 +196,10 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .refs li{padding:.48rem 0;border-bottom:1px solid var(--bord)}
 .refs li:last-child{border:none}
 
+/* BACK TO TOP */
+#btt{position:fixed;bottom:1.8rem;right:1.8rem;width:38px;height:38px;background:var(--gold-d);border:1px solid var(--gold-b);color:var(--gold);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;z-index:50;line-height:1}
+#btt.show{opacity:1}
+#btt:hover{background:var(--gold);color:#04080f}
 /* FOOTER */
 footer{padding:2.4rem 2rem;border-top:1px solid var(--bord);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:.77rem;color:var(--txm)}
 
@@ -738,6 +742,8 @@ hr{border:none;border-top:1px solid var(--bord);margin:2.5rem 0}
 
 </main>
 
+<button id="btt" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
 <footer>
   <div><strong style="color:var(--txb)">The Invisible Checkout</strong> &nbsp;·&nbsp; ECON1626 Assessment 3 &nbsp;·&nbsp; RMIT University 2026</div>
   <div>Hosted on <a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a></div>
@@ -746,9 +752,11 @@ hr{border:none;border-top:1px solid var(--bord);margin:2.5rem 0}
 <script>
 /* ── PROGRESS BAR ─────────────────────────────────────── */
 const prog = document.getElementById('prog');
+const btt = document.getElementById('btt');
 window.addEventListener('scroll', () => {
   const p = window.scrollY / (document.documentElement.scrollHeight - innerHeight) * 100;
   prog.style.width = Math.min(p,100)+'%';
+  btt.classList.toggle('show', window.scrollY > 600);
 },{passive:true});
 
 /* ── FADE UP ──────────────────────────────────────────── */
